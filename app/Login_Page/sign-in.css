@@ -23,3 +23,32 @@ body {
   border-top-left-radius: 0;
   border-top-right-radius: 0;
 }
+body {
+  background: linear-gradient(135deg, #74ebd5 0%, #ACB6E5 100%);
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.card {
+  border: none;
+  border-radius: 15px;
+  background-color: #ffffffcc;
+  backdrop-filter: blur(10px);
+}
+
+.btn-primary {
+  background-color: #4a90e2;
+  border: none;
+  transition: background-color 0.3s ease;
+}
+
+.btn-primary:hover {
+  background-color: #357ab8;
+}
+
+input:focus {
+  box-shadow: 0 0 0 0.2rem rgba(74, 144, 226, 0.25);
+}
+
+h1 {
+  color: black;
+}
