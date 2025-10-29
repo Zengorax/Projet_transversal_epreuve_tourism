@@ -184,3 +184,9 @@ form input, form select {
 .btn-primary:hover {
   background-color: #0056b3;
 }
+
+.icone_Horizon {
+    width: 75px; 
+    height: auto; 
+    margin-right:30px;
+}
