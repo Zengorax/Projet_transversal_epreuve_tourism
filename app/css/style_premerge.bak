@@ -5,6 +5,8 @@
     text-shadow: none;
 }
 
+
+
 body {
     text-shadow: 0 .05rem .1rem rgba(0, 0, 0, .5);
     box-shadow: inset 0 0 5rem rgba(0, 0, 0, .5);
@@ -13,6 +15,7 @@ body {
 .cover-container {
     max-width: 42em;
 }
+
 
 .nav-masthead .nav-link {
     color: rgba(255, 255, 255, .5);
@@ -32,6 +35,8 @@ body {
     color: #fff;
     border-bottom-color: #fff;
 }
+
+
 
 .bd-placeholder-img {
     font-size: 1.125rem;
@@ -130,22 +135,12 @@ body {
     border-radius: 8px;
 }
 
-.prixvoyage {
-    position: absolute;
-    top: 8px;
-    left: 8px;
-    background-color: rgba(0, 0, 0, 0.6);
-    color: whitesmoke;
-    font-size: 14px;
-    font-weight: 600;
-    padding: 4px 8px;
-    border-radius: 4px;
-}
 
 .detail-hero {
     background: url('https://images.unsplash.com/photo-1507525428034-b723cf961d3e') center/cover no-repeat;
     height: 70vh;
 }
+
 
 .timeline {
     border-left: 3px solid #007bff;
@@ -158,20 +153,25 @@ body {
     margin-bottom: 25px;
 }
 
+
+
 .timeline-item h5 {
     font-weight: bold;
     color: #007bff;
 }
+
 
 .carousel-inner img {
     height: auto;
     object-fit: cover;
 }
 
+
 form input,
 form select {
     border-radius: 0.3rem;
 }
+
 
 .btn-primary {
     background-color: #007bff;

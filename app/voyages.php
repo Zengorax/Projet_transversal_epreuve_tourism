@@ -10,10 +10,11 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
         crossorigin="anonymous"></script>
+    <script src="./js/signoutscript.js"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
     <link rel="stylesheet" href="./css/style.css">
     <meta name="theme-color" content="#712cf9" />
-    <style>
+    <!-- <style>
         .bd-placeholder-img {
             font-size: 1.125rem;
             text-anchor: middle;
@@ -123,11 +124,12 @@
             padding: 4px 8px;
             border-radius: 4px;
         }
-    </style>
+    </style> -->
     <?php include './dbconnect.php'; ?>
 </head>
 
 <body>
+
     <svg xmlns="http://www.w3.org/2000/svg" class="d-none">
         <symbol id="check2" viewBox="0 0 16 16">
             <path
@@ -151,6 +153,25 @@
             </path>
         </symbol>
     </svg>
+    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    ...
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary">Save changes</button>
+                </div>
+            </div>
+        </div>
+    </div>
     <div class="dropdown position-fixed bottom-0 end-0 mb-3 me-3 bd-mode-toggle">
         <button class="btn btn-bd-primary py-2 dropdown-toggle d-flex align-items-center" id="bd-theme" type="button"
             aria-expanded="false" data-bs-toggle="dropdown" aria-label="Toggle theme (auto)">
@@ -202,8 +223,8 @@
         <div class="container d-flex flex-wrap align-items-center position-relative">
             <h3 class="mb-0">Horizon Sportif</h3>
             <nav class="nav nav-masthead justify-content-center position-absolute start-50 translate-middle-x">
-                <a class="nav-link fw-bold py-1 px-2" aria-current="page" href="./index.html">Accueil</a>
-                <a class="nav-link fw-bold py-1 px-2 active" href="./voyage.html">Voyages</a>
+                <a class="nav-link fw-bold py-1 px-2" aria-current="page" href="./index.php">Accueil</a>
+                <a class="nav-link fw-bold py-1 px-2 active" href="./voyages.php">Voyages</a>
                 <a class="nav-link fw-bold py-1 px-2" href="#">Contact</a>
             </nav>
             <div class="dropdown ms-auto">
@@ -217,7 +238,7 @@
                     <li>
                         <hr class="dropdown-divider" />
                     </li>
-                    <li><a class="dropdown-item" href="#">Déconnexion</a></li>
+                    <li><a class="dropdown-item" href="#" onclick="signOut()">Déconnexion</a></li>
                 </ul>
             </div>
 
