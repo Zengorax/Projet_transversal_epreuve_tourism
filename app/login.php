@@ -11,7 +11,7 @@ if (isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true) {
 }
 
 
-require_once "config.php";
+require_once "./config.php";
 
 
 $username = $password = "";

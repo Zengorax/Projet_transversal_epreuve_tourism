@@ -131,9 +131,9 @@
           <h3 class="mb-0">Horizon Sportif</h3>
       </div>
       <nav class="nav nav-masthead justify-content-center">
-        <a class="nav-link fw-bold py-1 px-2" aria-current="page" href="./index.html">Accueil</a>
+        <a class="nav-link fw-bold py-1 px-2" aria-current="page" href="./index.php">Accueil</a>
         <a class="nav-link fw-bold py-1 px-2" href="./voyages.php">Voyages</a>
-        <a class="nav-link fw-bold py-1 px-2" href="./Contact.html">Contact</a>
+        <a class="nav-link fw-bold py-1 px-2" href="./contact.php">Contact</a>
       </nav>
       <div class="dropdown">
         <a href="#" class="d-flex align-items-center link-body-emphasis text-decoration-none dropdown-toggle"
