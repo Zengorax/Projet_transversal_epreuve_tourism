@@ -77,6 +77,82 @@
   }
   $isLoggedIn = !empty($_SESSION['username']); // clé à ajuster selon le système de login
   ?>
+  <div class="dropdown position-fixed bottom-0 end-0 mb-3 me-3 bd-mode-toggle">
+    <button class="btn btn-bd-primary py-2 dropdown-toggle d-flex align-items-center" id="bd-theme" type="button"
+      aria-expanded="false" data-bs-toggle="dropdown" aria-label="Toggle theme (auto)">
+      <svg class="bi my-1 theme-icon-active" aria-hidden="true">
+        <use href="#circle-half"></use>
+      </svg>
+      <span class="visually-hidden" id="bd-theme-text">Toggle theme</span>
+    </button>
+    <ul class="dropdown-menu dropdown-menu-end shadow" aria-labelledby="bd-theme-text">
+      <li>
+        <button type="button" class="dropdown-item d-flex align-items-center" data-bs-theme-value="light"
+          aria-pressed="false">
+          <svg class="bi me-2 opacity-50" aria-hidden="true">
+            <use href="#sun-fill"></use>
+          </svg>
+          Light
+          <svg class="bi ms-auto d-none" aria-hidden="true">
+            <use href="#check2"></use>
+          </svg>
+        </button>
+      </li>
+      <li>
+        <button type="button" class="dropdown-item d-flex align-items-center" data-bs-theme-value="dark"
+          aria-pressed="false">
+          <svg class="bi me-2 opacity-50" aria-hidden="true">
+            <use href="#moon-stars-fill"></use>
+          </svg>
+          Dark
+          <svg class="bi ms-auto d-none" aria-hidden="true">
+            <use href="#check2"></use>
+          </svg>
+        </button>
+      </li>
+      <li>
+        <button type="button" class="dropdown-item d-flex align-items-center active" data-bs-theme-value="auto"
+          aria-pressed="true">
+          <svg class="bi me-2 opacity-50" aria-hidden="true">
+            <use href="#circle-half"></use>
+          </svg>
+          Auto
+          <svg class="bi ms-auto d-none" aria-hidden="true">
+            <use href="#check2"></use>
+          </svg>
+        </button>
+      </li>
+    </ul>
+  </div>
+  <header class="mb-auto py-3 border-bottom">
+    <div class="container d-flex flex-wrap justify-content-between align-items-center">
+      <div class="d-flex align-items-center">
+        <img src="image/logo_agence_sans_fond.png" alt="Icône" class="icone_Horizon">
+          <h3 class="mb-0">Horizon Sportif</h3>
+      </div>
+      <nav class="nav nav-masthead justify-content-center">
+        <a class="nav-link fw-bold py-1 px-2" aria-current="page" href="./index.html">Accueil</a>
+        <a class="nav-link fw-bold py-1 px-2" href="./voyages.php">Voyages</a>
+        <a class="nav-link fw-bold py-1 px-2" href="./Contact.html">Contact</a>
+      </nav>
+      <div class="dropdown">
+        <a href="#" class="d-flex align-items-center link-body-emphasis text-decoration-none dropdown-toggle"
+        data-bs-toggle="dropdown" aria-expanded="false">
+        <img src="https://github.com/mdo.png" alt="" width="32" height="32" class="rounded-circle me-2" />
+        <strong>mdo</strong>
+        </a>
+        <ul class="dropdown-menu dropdown-menu-end text-small shadow">
+          <li><a class="dropdown-item" href="#">Paramètres</a></li>
+          <li><a class="dropdown-item" href="#">Profil</a></li>
+          <li><a class="dropdown-item" href="./reservation.html">Mes réservations</a></li>
+          <li>
+              <hr class="dropdown-divider" />
+          </li>
+          <li><a class="dropdown-item" href="#">Déconnexion</a></li>
+        </ul>
+      </div>
+    </div>
+  </header>
   <section class="py-5">
     <div class="container">
       <div class="row align-items-center">

@@ -220,28 +220,34 @@
         </ul>
     </div>
     <header class="mb-auto py-3 border-bottom">
-        <div class="container d-flex flex-wrap align-items-center position-relative">
+        <div class="container d-flex flex-wrap justify-content-between align-items-center">
+        <div class="d-flex align-items-center">
+            <img src="image/logo_agence_sans_fond.png" alt="Icône" class="icone_Horizon">
             <h3 class="mb-0">Horizon Sportif</h3>
-            <nav class="nav nav-masthead justify-content-center position-absolute start-50 translate-middle-x">
-                <a class="nav-link fw-bold py-1 px-2" aria-current="page" href="./index.html">Accueil</a>
-                <a class="nav-link fw-bold py-1 px-2 active" href="./voyages.php">Voyages</a>
-                <a class="nav-link fw-bold py-1 px-2" href="./Contact.html">Contact</a>
-            </nav>
-            <div class="dropdown ms-auto">
-                <a href="#" class="d-flex align-items-center link-body-emphasis text-decoration-none dropdown-toggle"
-                    data-bs-toggle="dropdown" aria-expanded="false">
-                    <strong>mdo</strong>
-                </a>
-                <ul class="dropdown-menu dropdown-menu-end text-small shadow">
-                    <li><a class="dropdown-item" href="#">Paramètres</a></li>
-                    <li><a class="dropdown-item" href="#">Profil</a></li>
-                    <li>
-                        <hr class="dropdown-divider" />
-                    </li>
-                    <li><a class="dropdown-item" href="#" onclick="signOut()">Déconnexion</a></li>
-                </ul>
-            </div>
+        </div>
 
+        <nav class="nav nav-masthead justify-content-center">
+            <a class="nav-link fw-bold py-1 px-2" aria-current="page" href="./index.html">Accueil</a>
+            <a class="nav-link fw-bold py-1 px-2 active" href="./voyages.php">Voyages</a>
+            <a class="nav-link fw-bold py-1 px-2" href="./Contact.html">Contact</a>
+        </nav>
+
+        <div class="dropdown">
+            <a href="#" class="d-flex align-items-center link-body-emphasis text-decoration-none dropdown-toggle"
+            data-bs-toggle="dropdown" aria-expanded="false">
+            <img src="https://github.com/mdo.png" alt="" width="32" height="32" class="rounded-circle me-2" />
+            <strong>mdo</strong>
+            </a>
+            <ul class="dropdown-menu dropdown-menu-end text-small shadow">
+            <li><a class="dropdown-item" href="#">Paramètres</a></li>
+            <li><a class="dropdown-item" href="#">Profil</a></li>
+            <li><a class="dropdown-item" href="./reservation.html">Mes réservations</a></li>
+            <li>
+                <hr class="dropdown-divider" />
+            </li>
+            <li><a class="dropdown-item" href="#">Déconnexion</a></li>
+            </ul>
+        </div>
         </div>
     </header>
     <main>
@@ -265,7 +271,7 @@
                     $nb = count($circuits);
                     for ($i = 0; $i < $nb; $i++) {
                         $idCircuit = $circuits[$i]['Id_Circuit_Touristique'];
-                        $voirLink = "http://localhost/sitevoyage/details.php?id=" . urlencode($idCircuit);
+                        $voirLink = "http://localhost/agence_voyage/Projet_transversal_epreuve_tourism/app/details.php?id=" . urlencode($idCircuit);
                         echo '<div class="col">
                                 <div class="card shadow-sm">
                                     <div class="image-rect0" style="background-image: url(' . $circuits[$i]['Image'] . ');">
@@ -293,6 +299,10 @@
             </div>
         </div>
     </main>
+    <div class="mt-4 text-center text-muted small">
+          <p>Adresse : 123 Rue Exemple, 35000 Rennes</p>
+          <p>Téléphone : 02 99 00 00 00</p>
+    </div>
     <footer class="text-body-secondary py-5">
         <div class="container">
             <p class="float-end mb-1"><a href="#">Back to top</a></p>
