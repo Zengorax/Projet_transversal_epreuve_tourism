@@ -1,3 +1,7 @@
+<?php
+session_start();
+?>
+
 <!doctype html>
 <html lang="en" data-bs-theme="dark">
 
@@ -14,6 +18,12 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
     <link rel="stylesheet" href="./css/style.css">
     <meta name="theme-color" content="#712cf9" />
+    <script>
+        function signout() {
+            fetch('./signout.php')
+                .then(() => location.reload())
+        }
+    </script>
     <!-- <style>
         .bd-placeholder-img {
             font-size: 1.125rem;
@@ -125,7 +135,11 @@
             border-radius: 4px;
         }
     </style> -->
-    <?php include './dbconnect.php'; ?>
+    <?php
+    include './dbconnect.php';
+    include './cururl.php';
+    var_dump($_SESSION['currenturl']);
+    ?>
 </head>
 
 <body>
@@ -221,31 +235,39 @@
     </div>
     <header class="mb-auto py-3 border-bottom">
         <div class="container d-flex flex-wrap justify-content-between align-items-center">
-        <div class="d-flex align-items-center">
-            <img src="image/logo_agence_sans_fond.png" alt="Icône" class="icone_Horizon">
-            <h3 class="mb-0">Horizon Sportif</h3>
-        </div>
+            <div class="d-flex align-items-center">
+                <img src="image/logo_agence_sans_fond.png" alt="Icône" class="icone_Horizon">
+                <h3 class="mb-0">Horizon Sportif</h3>
+            </div>
 
-        <nav class="nav nav-masthead justify-content-center">
-            <a class="nav-link fw-bold py-1 px-2" aria-current="page" href="./index.html">Accueil</a>
-            <a class="nav-link fw-bold py-1 px-2 active" href="./voyages.php">Voyages</a>
-            <a class="nav-link fw-bold py-1 px-2" href="./Contact.html">Contact</a>
-        </nav>
+            <nav class="nav nav-masthead justify-content-center">
+                <a class="nav-link fw-bold py-1 px-2" aria-current="page" href="./index.html">Accueil</a>
+                <a class="nav-link fw-bold py-1 px-2 active" href="./voyages.php">Voyages</a>
+                <a class="nav-link fw-bold py-1 px-2" href="./Contact.html">Contact</a>
+            </nav>
 
-        <div class="dropdown">
-            <a href="#" class="d-flex align-items-center link-body-emphasis text-decoration-none dropdown-toggle"
-            data-bs-toggle="dropdown" aria-expanded="false">
-            <img src="https://github.com/mdo.png" alt="" width="32" height="32" class="rounded-circle me-2" />
-            <strong>mdo</strong>
-            </a>
-            <ul class="dropdown-menu dropdown-menu-end text-small shadow">
-            <li><a class="dropdown-item" href="./reservation.html">Mes réservations</a></li>
-            <li>
-                <hr class="dropdown-divider" />
-            </li>
-            <li><a class="dropdown-item" href="./Sign-in.html">Déconnexion</a></li>
-            </ul>
-        </div>
+            <div class="dropdown">
+                <a href="#" class="d-flex align-items-center link-body-emphasis text-decoration-none dropdown-toggle"
+                    data-bs-toggle="dropdown" aria-expanded="false">
+                    <img src="https://github.com/mdo.png" alt="" width="32" height="32" class="rounded-circle me-2" />
+                    <strong>
+                        <?php if (isset($_SESSION['Identifiant'])):
+                            echo htmlspecialchars($_SESSION["Identifiant"]);
+                        else:
+                            echo 'Non Connecté';
+                        endif;
+                        ?>
+                    </strong>
+                </a>
+                <ul class="dropdown-menu dropdown-menu-end text-small shadow">
+                    <li><a class="dropdown-item" href="./reservation.html">Mes réservations</a></li>
+                    <li>
+                        <hr class="dropdown-divider" />
+                    </li>
+                    <li><a class="dropdown-item" href="login.php">Login</a></li>
+                    <li><a class="dropdown-item" onclick="signout()">Déconnection</a></li>
+                </ul>
+            </div>
         </div>
     </header>
     <main>
@@ -298,8 +320,8 @@
         </div>
     </main>
     <div class="mt-4 text-center text-muted small">
-          <p>Adresse : 123 Rue Exemple, 35000 Rennes</p>
-          <p>Téléphone : 02 99 00 00 00</p>
+        <p>Adresse : 123 Rue Exemple, 35000 Rennes</p>
+        <p>Téléphone : 02 99 00 00 00</p>
     </div>
     <footer class="text-body-secondary py-5">
         <div class="container">
