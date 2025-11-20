@@ -239,13 +239,11 @@
             <strong>mdo</strong>
             </a>
             <ul class="dropdown-menu dropdown-menu-end text-small shadow">
-            <li><a class="dropdown-item" href="#">Paramètres</a></li>
-            <li><a class="dropdown-item" href="#">Profil</a></li>
             <li><a class="dropdown-item" href="./reservation.html">Mes réservations</a></li>
             <li>
                 <hr class="dropdown-divider" />
             </li>
-            <li><a class="dropdown-item" href="#">Déconnexion</a></li>
+            <li><a class="dropdown-item" href="./Sign-in.html">Déconnexion</a></li>
             </ul>
         </div>
         </div>
@@ -305,7 +303,7 @@
     </div>
     <footer class="text-body-secondary py-5">
         <div class="container">
-            <p class="float-end mb-1"><a href="#">Back to top</a></p>
+            <p class="mb-1"><a href="#">Back to top</a></p>
         </div>
     </footer>
     <script src="./js/theme-toggle.js"></script>

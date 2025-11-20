@@ -142,13 +142,11 @@
         <strong>mdo</strong>
         </a>
         <ul class="dropdown-menu dropdown-menu-end text-small shadow">
-          <li><a class="dropdown-item" href="#">Paramètres</a></li>
-          <li><a class="dropdown-item" href="#">Profil</a></li>
           <li><a class="dropdown-item" href="./reservation.html">Mes réservations</a></li>
           <li>
               <hr class="dropdown-divider" />
           </li>
-          <li><a class="dropdown-item" href="#">Déconnexion</a></li>
+          <li><a class="dropdown-item" href="./Sign-in.html">Déconnexion</a></li>
         </ul>
       </div>
     </div>

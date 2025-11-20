@@ -24,6 +24,7 @@ body {
     border-bottom-color: rgba(255, 255, 255, .25);
 }
 
+
 .nav-masthead .nav-link+.nav-link {
     margin-left: 1rem;
 }
@@ -116,6 +117,15 @@ body {
     display: block !important;
 }
 
+.dropdown-menu-end {
+    position: fixed;
+    top: 0;
+    right: 0;
+    padding: 10px;
+
+}
+
+
 .acceuil {
     background-image: url(../image/home.png);
 }
@@ -187,4 +197,8 @@ form select {
     width: 75px;
     height: auto;
     margin-right: 30px;
+}
+
+.mb-3 {
+padding: 20px;
 }
