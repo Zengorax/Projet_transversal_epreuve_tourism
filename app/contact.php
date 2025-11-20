@@ -99,7 +99,14 @@
         <a href="#" class="d-flex align-items-center link-body-emphasis text-decoration-none dropdown-toggle"
           data-bs-toggle="dropdown" aria-expanded="false">
           <img src="https://github.com/mdo.png" alt="" width="32" height="32" class="rounded-circle me-2" />
-          <strong>mdo</strong>
+          <strong>
+            <?php if (isset($_SESSION['Identifiant'])):
+                echo htmlspecialchars($_SESSION["Identifiant"]);
+            else:
+                echo 'Non Connecté';
+            endif;
+            ?>
+        </strong>
         </a>
         <ul class="dropdown-menu dropdown-menu-end text-small shadow">
           <li><a class="dropdown-item" href="./reservation.html">Mes réservations</a></li>

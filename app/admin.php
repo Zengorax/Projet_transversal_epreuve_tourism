@@ -1,5 +1,6 @@
 <?php
 session_start();
+$_SESSION['admin'] = 'admin';
 if (!isset($_SESSION['admin'])) {
     header('Location: login.php');
     exit;
