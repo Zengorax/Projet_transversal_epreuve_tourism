@@ -1,5 +1,9 @@
+<?php
+session_start();
+?>
+
 <!doctype html>
-<html lang="en" class="h-100" data-bs-theme="dark">
+<html lang="fr" class="h-100" data-bs-theme="dark">
 
 <head>
     <meta charset="utf-8" />
@@ -16,6 +20,16 @@
     <link rel="stylesheet" href="./css/style.css">
     <meta name="theme-color" content="#712cf9" />
     <link href="./css/cover.css" rel="stylesheet" />
+    <script>
+        function signout() {
+            fetch('./signout.php')
+                .then(() => location.reload())
+        }
+    </script>
+    <?php
+    include './dbconnect.php';
+    include './cururl.php';
+    ?>
 </head>
 
 <body style="background-image: url(./image/home.png);">
@@ -118,7 +132,8 @@
                     <li>
                         <hr class="dropdown-divider" />
                     </li>
-                    <li><a class="dropdown-item" href="./Sign-in.html">Déconnexion</a></li>
+                    <li><a class="dropdown-item" href="login.php">Login</a></li>
+                    <li><a class="dropdown-item" onclick="signout()">Déconnection</a></li>
                 </ul>
             </div>
         </div>

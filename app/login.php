@@ -1,10 +1,7 @@
 <?php
 
 session_start();
-//pour reset la session
-//$_SESSION['loggedin'] = '';
 $currenturl = $_SESSION['currenturl'];
-var_dump($_SESSION['currenturl']);
 if (isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true) {
     header("Location: $currenturl");
     exit;
@@ -23,13 +20,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
 
     if (empty(trim($_POST["username"] ?? ""))) {
-        $username_err = "Please enter username.";
+        $username_err = "Mot de passe ou nom d'utilisateur incorrect.";
     } else {
         $username = trim($_POST["username"]);
     }
 
     if (empty(trim($_POST["password"] ?? ""))) {
-        $password_err = "Please enter your password.";
+        $password_err = "Mot de passe ou nom d'utilisateur incorrect.";
     } else {
         $password = trim($_POST["password"]);
     }
@@ -69,15 +66,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                             exit;
                         } else {
 
-                            $login_err = "Invalid username or password.";
+                            $login_err = "Mot de passe ou nom d'utilisateur incorrect.";
                         }
                     }
                 } else {
 
-                    $login_err = "Invalid username or password.";
+                    $login_err = "Mot de passe ou nom d'utilisateur incorrect.";
                 }
             } else {
-                echo "Oops! Something went wrong. Please try again later.";
+                echo "Les problémes.";
             }
 
 
