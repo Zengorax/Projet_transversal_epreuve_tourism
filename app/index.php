@@ -117,7 +117,6 @@ session_start();
             <div class="dropdown">
                 <a href="#" class="d-flex align-items-center link-body-emphasis text-decoration-none dropdown-toggle"
                     data-bs-toggle="dropdown" aria-expanded="false">
-                    <img src="https://github.com/mdo.png" alt="" width="32" height="32" class="rounded-circle me-2" />
                     <strong>
                         <?php if (isset($_SESSION['Identifiant'])):
                             echo htmlspecialchars($_SESSION["Identifiant"]);
@@ -132,9 +131,13 @@ session_start();
                     <li>
                         <hr class="dropdown-divider" />
                     </li>
-                    <li><a class="dropdown-item" href="login.php">Login</a></li>
-                    <li><a class="dropdown-item" onclick="signout()">Déconnection</a></li>
+                    <?php if (!isset($_SESSION['Identifiant'])): ?>
+                        <li><a class="dropdown-item" href="login.php">Login</a></li>
+                    <?php else: ?>
+                        <li><a class="dropdown-item" onclick="signout()">Déconnection</a></li>
+                    <?php endif; ?>
                 </ul>
+
             </div>
         </div>
     </header>

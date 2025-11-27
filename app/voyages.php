@@ -136,7 +136,7 @@ session_start();
         }
     </style> -->
     <?php
-    include './dbconnect.php';
+    include './config.php';
     include './cururl.php';
     var_dump($_SESSION['currenturl']);
     ?>
@@ -249,7 +249,6 @@ session_start();
             <div class="dropdown">
                 <a href="#" class="d-flex align-items-center link-body-emphasis text-decoration-none dropdown-toggle"
                     data-bs-toggle="dropdown" aria-expanded="false">
-                    <img src="https://github.com/mdo.png" alt="" width="32" height="32" class="rounded-circle me-2" />
                     <strong>
                         <?php if (isset($_SESSION['Identifiant'])):
                             echo htmlspecialchars($_SESSION["Identifiant"]);
@@ -264,8 +263,11 @@ session_start();
                     <li>
                         <hr class="dropdown-divider" />
                     </li>
-                    <li><a class="dropdown-item" href="login.php">Login</a></li>
-                    <li><a class="dropdown-item" onclick="signout()">Déconnection</a></li>
+                    <?php if (!isset($_SESSION['Identifiant'])): ?>
+                        <li><a class="dropdown-item" href="login.php">Login</a></li>
+                    <?php else: ?>
+                        <li><a class="dropdown-item" onclick="signout()">Déconnection</a></li>
+                    <?php endif; ?>
                 </ul>
             </div>
         </div>
@@ -285,7 +287,7 @@ session_start();
             <div class="container">
                 <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
                     <?php
-                    $sth = $conn->prepare("SELECT circuit_touristique.Id_Circuit_Touristique, ville_depart.Nom AS ville_depart, ville_arrivee.Nom AS ville_arrivee, circuit_touristique.Description, circuit_touristique.Duree_Circuit, circuit_touristique.Image, circuit_touristique.Nb_Places_Dispo, circuit_touristique.Prix_Inscription FROM circuit_touristique LEFT JOIN ville AS ville_depart ON circuit_touristique.ID_Ville = ville_depart.ID_Ville LEFT JOIN ville AS ville_arrivee ON circuit_touristique.ID_Ville_1 = ville_arrivee.ID_Ville;");
+                    $sth = $pdo->prepare("SELECT circuit_touristique.Id_Circuit_Touristique, ville_depart.Nom AS ville_depart, ville_arrivee.Nom AS ville_arrivee, circuit_touristique.Description, circuit_touristique.Duree_Circuit, circuit_touristique.Image, circuit_touristique.Nb_Places_Dispo, circuit_touristique.Prix_Inscription FROM circuit_touristique LEFT JOIN ville AS ville_depart ON circuit_touristique.ID_Ville = ville_depart.ID_Ville LEFT JOIN ville AS ville_arrivee ON circuit_touristique.ID_Ville_1 = ville_arrivee.ID_Ville;");
                     $sth->execute([]);
                     $circuits = $sth->fetchAll();
                     $nb = count($circuits);
