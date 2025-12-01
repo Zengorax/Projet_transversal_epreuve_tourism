@@ -73,7 +73,7 @@ La base de donnée s'articule principalement autour des tables suivantes :
 
 3.  **Configurer votre connection PDO :**
 
-    - Maintenant que la bdd est prête renommez le config-exemple.php présent dans /app et modifiez les entrées en fonction de votre base de donnée
+    - Maintenant que la bdd est prête renommez le config-exemple.php présent dans /app en config.php et modifiez les entrées en fonction de votre base de donnée
 
     ```php
     define('DB_SERVER', 'host:port'); # Remplacer host:port par le nom de votre serveur et son port (par défaut 3306 pour mysql) ex : localhost:3306
