@@ -1,3 +1,84 @@
+<?php
+
+session_start();
+
+
+require_once 'config.php';
+
+$reservations = [];
+$error_message = null;
+
+
+if (!isset($_SESSION['Identifiant'])) {
+  header('Location: login.php');
+  exit;
+}
+
+
+$identifiant_utilisateur = $_SESSION['Identifiant'];
+
+
+$client_id = 0;
+
+
+try {
+
+  $sql_id = "SELECT Id_Client FROM Client WHERE Identifiant = :identifiant_utilisateur";
+  $stmt_id = $pdo->prepare($sql_id);
+  $stmt_id->bindParam(':identifiant_utilisateur', $identifiant_utilisateur, PDO::PARAM_STR);
+  $stmt_id->execute();
+
+  $result = $stmt_id->fetch(PDO::FETCH_ASSOC);
+
+  if ($result) {
+    $client_id = (int)$result['Id_Client'];
+  } else {
+    $error_message = "Erreur : Client introuvable dans la base de données.";
+  }
+
+
+  if ($client_id > 0) {
+
+    $sql = "SELECT 
+                    Reservation.Id_Reservation, 
+                    V_Depart.Nom AS Ville_Depart, 
+                    V_Arrivee.Nom AS Ville_Arrivee, 
+                    Pays.Nom AS Pays_Destination, 
+                    Circuit_Touristique.Date_Depart, 
+                    Reservation.nb_personne, 
+                    Statut.Statut 
+                FROM 
+                    Reservation
+                LEFT JOIN 
+                    Circuit_Touristique ON Reservation.Id_Circuit_Touristique = Circuit_Touristique.Id_Circuit_Touristique 
+                LEFT JOIN 
+                    Ville V_Depart ON Circuit_Touristique.Id_Ville_1 = V_Depart.Id_Ville 
+                LEFT JOIN 
+                    Ville V_Arrivee ON Circuit_Touristique.Id_Ville = V_Arrivee.Id_Ville 
+                LEFT JOIN 
+                    Pays ON V_Arrivee.Id_Pays = Pays.Id_Pays 
+                LEFT JOIN 
+                    Statut ON Reservation.Id_Statut = Statut.Id_Statut 
+                WHERE 
+                    Reservation.Id_Client = :client_id 
+                ORDER BY 
+                    Circuit_Touristique.Date_Depart DESC";
+
+    $stmt = $pdo->prepare($sql);
+    $stmt->bindParam(':client_id', $client_id, PDO::PARAM_INT);
+
+    $stmt->execute();
+
+    $reservations = $stmt->fetchAll(PDO::FETCH_ASSOC);
+  }
+} catch (PDOException $e) {
+
+  $error_message = "Une erreur est survenue lors du chargement des réservations. Veuillez réessayer plus tard.";
+  error_log("Database error in reservation.php: " . $e->getMessage());
+  $reservations = [];
+}
+?>
+
 <!DOCTYPE html>
 <html lang="fr">
 
@@ -26,13 +107,10 @@
       <div class="dropdown">
         <a href="#" class="d-flex align-items-center link-body-emphasis text-decoration-none dropdown-toggle"
           data-bs-toggle="dropdown" aria-expanded="false">
-          <img src="https://github.com/mdo.png" alt="" width="32" height="32" class="rounded-circle me-2" />
-          <strong>mdo</strong>
+          <strong><?php echo htmlspecialchars($_SESSION['Identifiant'] ?? 'utilisateur'); ?></strong>
         </a>
         <ul class="dropdown-menu dropdown-menu-end text-small shadow">
-          <li><a class="dropdown-item" href="#">Paramètres</a></li>
-          <li><a class="dropdown-item" href="#">Profil</a></li>
-          <li><a class="dropdown-item" href="./reservation.php">Mes réservations</a></li>
+          <li><a class="dropdown-item active" href="./reservation.php">Mes réservations</a></li>
           <li>
             <hr class="dropdown-divider" />
           </li>
@@ -50,101 +128,80 @@
     <h2 class="text-center fw-bold mb-4">Mes Réservations</h2>
 
     <div class="card p-4">
-      <table class="table table-hover align-middle">
-        <thead class="">
-          <tr>
-            <th scope="col">#</th>
-            <th scope="col">Destination</th>
-            <th scope="col">Dates</th>
-            <th scope="col">Passagers</th>
-            <th scope="col">Statut</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <th scope="row">1</th>
-            <td>Tokyo</td>
-            <td>10/12/2025 → 20/12/2025</td>
-            <td>2</td>
-            <td><span class="badge bg-success">Confirmée</span></td>
-          </tr>
-          <tr>
-            <th scope="row">2</th>
-            <td>New York</td>
-            <td>05/01/2026 → 12/01/2026</td>
-            <td>1</td>
-            <td><span class="badge bg-warning text-dark">En attente</span></td>
-          </tr>
-          <tr>
-            <th scope="row">3</th>
-            <td>Rome</td>
-            <td>15/03/2026 → 22/03/2026</td>
-            <td>3</td>
-            <td><span class="badge bg-danger">Annulée</span></td>
-          </tr>
-          <tr>
-            <th scope="row">4</th>
-            <td>Lisbonne</td>
-            <td>01/05/2026 → 08/05/2026</td>
-            <td>2</td>
-            <td><span class="badge bg-success">Confirmée</span></td>
-          </tr>
-        </tbody>
-      </table>
+      <?php if ($error_message): ?>
+        <div class="alert alert-danger" role="alert">
+          <?php echo $error_message; ?>
+        </div>
+      <?php elseif (empty($reservations)): ?>
+        <div class="alert alert-info" role="alert">
+          Vous n'avez actuellement aucune réservation.
+        </div>
+      <?php else: ?>
+        <table class="table table-hover align-middle">
+          <thead class="">
+            <tr>
+              <th scope="col">Numéro de réservation</th>
+              <th scope="col">Départ / Arrivée</th>
+              <th scope="col">Pays</th>
+              <th scope="col">Date de départ</th>
+              <th scope="col">Nb de personnes</th>
+              <th scope="col">Statut</th>
+            </tr>
+          </thead>
+          <tbody>
+            <?php foreach ($reservations as $res): ?>
+              <tr>
+                <th scope="row"><?php echo htmlspecialchars($res['Id_Reservation']); ?></th>
+                <td>
+                  <strong><?php echo htmlspecialchars($res['Ville_Depart'] ?? 'N/D'); ?></strong> →
+                  <?php echo htmlspecialchars($res['Ville_Arrivee'] ?? 'N/D'); ?>
+                </td>
+                <td>
+                  <?php echo htmlspecialchars($res['Pays_Destination'] ?? 'Inconnu'); ?>
+                </td>
+                <td>
+                  <?php
+                  $date_depart = $res['Date_Depart'] ? date('d/m/Y', strtotime($res['Date_Depart'])) : 'N/A';
+                  echo $date_depart;
+                  ?>
+                </td>
+                <td><?php echo htmlspecialchars($res['nb_personne'] ?? 'N/D'); ?></td>
+                <td>
+                  <?php
+
+                  $statut_text = htmlspecialchars($res['Statut'] ?? 'Inconnu');
+                  $statut_class = match (mb_strtolower($statut_text)) {
+                    'confirmée', 'validé' => 'bg-success',
+                    'en attente' => 'bg-warning text-dark',
+                    'annulée' => 'bg-danger',
+                    default => 'bg-secondary',
+                  };
+                  ?>
+                  <span class="badge <?php echo $statut_class; ?>"><?php echo $statut_text; ?></span>
+                </td>
+              </tr>
+            <?php endforeach; ?>
+          </tbody>
+        </table>
+      <?php endif; ?>
     </div>
   </div>
-  <div class="dropdown position-fixed bottom-0 end-0 mb-3 me-3 bd-mode-toggle">
-    <button class="btn btn-bd-primary py-2 dropdown-toggle d-flex align-items-center" id="bd-theme" type="button"
-      aria-expanded="false" data-bs-toggle="dropdown" aria-label="Toggle theme (auto)">
-      <svg class="bi my-1 theme-icon-active" aria-hidden="true">
-        <use href="#circle-half"></use>
-      </svg>
-      <span class="visually-hidden" id="bd-theme-text">Toggle theme</span>
-    </button>
-    <ul class="dropdown-menu dropdown-menu-end shadow" aria-labelledby="bd-theme-text">
-      <li>
-        <button type="button" class="dropdown-item d-flex align-items-center" data-bs-theme-value="light"
-          aria-pressed="false">
-          <svg class="bi me-2 opacity-50" aria-hidden="true">
-            <use href="#sun-fill"></use>
-          </svg>
-          Light
-          <svg class="bi ms-auto d-none" aria-hidden="true">
-            <use href="#check2"></use>
-          </svg>
-        </button>
-      </li>
-      <li>
-        <button type="button" class="dropdown-item d-flex align-items-center" data-bs-theme-value="dark"
-          aria-pressed="false">
-          <svg class="bi me-2 opacity-50" aria-hidden="true">
-            <use href="#moon-stars-fill"></use>
-          </svg>
-          Dark
-          <svg class="bi ms-auto d-none" aria-hidden="true">
-            <use href="#check2"></use>
-          </svg>
-        </button>
-      </li>
-      <li>
-        <button type="button" class="dropdown-item d-flex align-items-center active" data-bs-theme-value="auto"
-          aria-pressed="true">
-          <svg class="bi me-2 opacity-50" aria-hidden="true">
-            <use href="#circle-half"></use>
-          </svg>
-          Auto
-          <svg class="bi ms-auto d-none" aria-hidden="true">
-            <use href="#check2"></use>
-          </svg>
-        </button>
-      </li>
-    </ul>
-  </div>
+
+  <script src="./js/theme-toggle.js"></script>
+  <script>
+    function signout() {
+      if (confirm("Voulez-vous vous déconnecter ?")) {
+        window.location.href = 'logout.php';
+      }
+    }
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
+    integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r"
+    crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.min.js"
+    integrity="sha384-G/EV+4j2dNv+tEPo3++6LCgdCROaejBqfUeNjuKAiuXbjrxilcCdDz6ZAVfHWe1Y"
+    crossorigin="anonymous"></script>
+
 </body>
-<script src="./js/theme-toggle.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
-  integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.min.js"
-  integrity="sha384-G/EV+4j2dNv+tEPo3++6LCgdCROaejBqfUeNjuKAiuXbjrxilcCdDz6ZAVfHWe1Y" crossorigin="anonymous"></script>
 
 </html>
