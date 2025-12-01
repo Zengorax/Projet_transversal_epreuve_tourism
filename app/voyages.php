@@ -27,7 +27,6 @@ session_start();
     <?php
     include './config.php';
     include './cururl.php';
-    var_dump($_SESSION['currenturl']);
     ?>
 </head>
 
@@ -148,7 +147,7 @@ session_start();
                     </strong>
                 </a>
                 <ul class="dropdown-menu dropdown-menu-end text-small shadow">
-                    <li><a class="dropdown-item" href="./reservation.html">Mes réservations</a></li>
+                    <li><a class="dropdown-item" href="./reservation.php">Mes réservations</a></li>
                     <li>
                         <hr class="dropdown-divider" />
                     </li>
