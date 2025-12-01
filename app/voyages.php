@@ -181,7 +181,7 @@ session_start();
                     $nb = count($circuits);
                     for ($i = 0; $i < $nb; $i++) {
                         $idCircuit = $circuits[$i]['Id_Circuit_Touristique'];
-                        $voirLink = "http://localhost/agence_voyage/Projet_transversal_epreuve_tourism/details.php?id=" . urlencode($idCircuit);
+                        $voirLink = "./details.php?id=" . urlencode($idCircuit);
                         echo '<div class="col">
                                 <div class="card shadow-sm">
                                     <div class="image-rect0" style="background-image: url(' . $circuits[$i]['Image'] . ');">
