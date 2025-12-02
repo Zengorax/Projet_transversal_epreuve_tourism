@@ -1,70 +1,124 @@
 document.addEventListener('DOMContentLoaded', function () {
-  var reserveBtn = document.getElementById('reserveBtn');
-  var modalEl = document.getElementById('confirmReserveModal');
-  var modalPriceEl = document.getElementById('modalPrice');
-  var reserveAlert = document.getElementById('reserveAlert');
-  var confirmBtn = document.getElementById('confirmReserveBtn');
+  const modalEl = document.getElementById('confirmReserveModal');
+  if (!modalEl) return;
 
-  if (!reserveBtn || !modalEl || !modalPriceEl || !confirmBtn || !reserveAlert) {
-    console.warn('reservation.js: missing DOM elements', {
-      reserveBtn: !!reserveBtn,
-      modalEl: !!modalEl,
-      modalPriceEl: !!modalPriceEl,
-      confirmBtn: !!confirmBtn,
-      reserveAlert: !!reserveAlert
-    });
-    return;
-  }
-  var circuitId = reserveBtn.getAttribute('data-circuit-id');
-  var isLoggedIn = reserveBtn.getAttribute('data-logged-in') === '1';
-  var price = reserveBtn.getAttribute('data-price') || '—';
+  const unitPriceSelectors = ['#modalPrice', '#prix-unitaire', '#prixUnitaire', '#modal-price'];
+  const nbSelectors = ['#modalNbPersonne', '#nb-personne', '#nbPersonne', '#modal-nb-personne'];
+  const totalSelectors = ['#modalTotalPrice', '#prix-total', '#prixTotal', '#modal-total-price'];
 
-  modalEl.addEventListener('show.bs.modal', function () {
-    reserveAlert.classList.add('d-none');
-    reserveAlert.classList.remove('alert-success', 'alert-danger', 'alert-warning');
-
-    modalPriceEl.textContent = price;
-
-    if (!isLoggedIn) {
-      reserveAlert.textContent = 'Vous devez être connecté pour réserver.';
-      reserveAlert.classList.remove('d-none');
-      reserveAlert.classList.add('alert-warning');
-      confirmBtn.disabled = true;
-    } else {
-      confirmBtn.disabled = false;
+  function firstEl(selectors) {
+    for (let s of selectors) {
+      const el = modalEl.querySelector(s);
+      if (el) return el;
     }
+    return null;
+  }
+
+  const unitPriceEl = firstEl(unitPriceSelectors);
+  const nbInput = firstEl(nbSelectors);
+  const totalEl = firstEl(totalSelectors);
+  const reserveAlert = modalEl.querySelector('#reserveAlert') || null;
+  const confirmBtn = modalEl.querySelector('#confirmReserveBtn');
+
+  if (!nbInput || !confirmBtn) return;
+
+  let currentCircuitId = null;
+  let currentUnitPrice = 0;
+
+  modalEl.addEventListener('show.bs.modal', function (event) {
+    const triggerBtn = event.relatedTarget;
+    if (!triggerBtn) return;
+
+    currentCircuitId = triggerBtn.getAttribute('data-circuit-id') || triggerBtn.getAttribute('data-id') || null;
+    const priceStr = (triggerBtn.getAttribute('data-price') || triggerBtn.getAttribute('data-prix') || triggerBtn.dataset.price || '0').toString();
+    currentUnitPrice = parseFloat(priceStr.replace(',', '.')) || 0;
+
+    nbInput.value = 1;
+    nbInput.setAttribute('min', '1');
+    nbInput.setAttribute('max', '10');
+
+    if (unitPriceEl) unitPriceEl.textContent = currentUnitPrice.toFixed(2);
+    if (totalEl) totalEl.textContent = currentUnitPrice.toFixed(2);
+
+    if (reserveAlert) {
+      reserveAlert.classList.add('d-none');
+      reserveAlert.classList.remove('alert-success', 'alert-danger', 'alert-warning');
+    }
+
+    confirmBtn.disabled = false;
+  });
+
+  nbInput.addEventListener('input', function () {
+    let nb = parseInt(nbInput.value, 10);
+    if (isNaN(nb) || nb < 1) nb = 1;
+    if (nb > 10) {
+      nb = 10;
+      nbInput.value = '10';
+    }
+    if (totalEl) totalEl.textContent = (nb * currentUnitPrice).toFixed(2);
   });
 
   confirmBtn.addEventListener('click', function () {
     confirmBtn.disabled = true;
-    reserveAlert.classList.add('d-none');
 
-    fetch('/reservation_submit.php', {
+    let nb_personne = parseInt(nbInput.value, 10);
+    if (isNaN(nb_personne) || nb_personne < 1) nb_personne = 1;
+    if (nb_personne > 10) nb_personne = 10;
+
+    if (!currentCircuitId) {
+      if (reserveAlert) {
+        reserveAlert.textContent = 'Erreur interne : ID du circuit manquant.';
+        reserveAlert.classList.remove('d-none');
+        reserveAlert.classList.add('alert-danger');
+      }
+      confirmBtn.disabled = false;
+      return;
+    }
+
+    const payload = { id: parseInt(currentCircuitId, 10), nb_personne: nb_personne };
+
+    fetch('reservation_submit.php', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ id: circuitId })
+      body: JSON.stringify(payload)
     })
-    .then(function (r) { return r.json(); })
-    .then(function (data) {
+    .then(resp => {
+      if (!resp.ok) throw new Error('Network response not ok: ' + resp.status);
+      return resp.json();
+    })
+    .then(data => {
       if (data && data.success) {
-        reserveAlert.textContent = 'Réservation effectuée.';
-        reserveAlert.classList.remove('d-none', 'alert-danger', 'alert-warning');
-        reserveAlert.classList.add('alert-success');
-        setTimeout(function () {
-          var modalInstance = bootstrap.Modal.getInstance(modalEl);
-          if (modalInstance) modalInstance.hide();
-        }, 900);
+        if (reserveAlert) {
+          reserveAlert.textContent = data.message || 'Réservation effectuée.';
+          reserveAlert.classList.remove('d-none', 'alert-danger', 'alert-warning');
+          reserveAlert.classList.add('alert-success');
+        } else {
+          alert(data.message || 'Réservation effectuée.');
+        }
+        setTimeout(() => {
+          const bsModal = bootstrap.Modal.getInstance(modalEl);
+          if (bsModal) bsModal.hide();
+        }, 800);
       } else {
-        reserveAlert.textContent = (data && data.message) ? data.message : 'Erreur lors de la réservation.';
-        reserveAlert.classList.remove('d-none', 'alert-success', 'alert-warning');
-        reserveAlert.classList.add('alert-danger');
+        const msg = (data && data.message) ? data.message : 'Erreur lors de la réservation.';
+        if (reserveAlert) {
+          reserveAlert.textContent = msg;
+          reserveAlert.classList.remove('d-none', 'alert-success', 'alert-warning');
+          reserveAlert.classList.add('alert-danger');
+        } else {
+          alert(msg);
+        }
         confirmBtn.disabled = false;
       }
     })
-    .catch(function () {
-      reserveAlert.textContent = 'Erreur réseau.';
-      reserveAlert.classList.remove('d-none', 'alert-success', 'alert-warning');
-      reserveAlert.classList.add('alert-danger');
+    .catch(() => {
+      if (reserveAlert) {
+        reserveAlert.textContent = 'Erreur réseau.';
+        reserveAlert.classList.remove('d-none', 'alert-success', 'alert-warning');
+        reserveAlert.classList.add('alert-danger');
+      } else {
+        alert('Erreur réseau.');
+      }
       confirmBtn.disabled = false;
     });
   });

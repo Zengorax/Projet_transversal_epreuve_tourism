@@ -1,5 +1,6 @@
 <?php
 session_start();
+include './config.php';
 ?>
 
 <!DOCTYPE html>
@@ -13,14 +14,12 @@ session_start();
     integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
   <link rel="stylesheet" href="./css/style.css">
-  <?php include './dbconnect.php'; ?>
-  <script src="./js/signoutscript.js"></script>
   <script>
     function signout() {
       fetch('./signout.php')
         .then(() => location.reload())
     }
-    </script>
+  </script>
 </head>
 
 <body>
@@ -48,6 +47,7 @@ session_start();
     </symbol>
   </svg>
   <?php
+  include './cururl.php';
   if (isset($_GET['id'])) {
     $idCircuit = $_GET['id'];
   } else {
@@ -56,13 +56,12 @@ session_start();
   ?>
 
   <?php
-  include './dbconnect.php';
   if (isset($_GET['id'])) {
     $idCircuit = (int) $_GET['id'];
   } else {
     die("Aucun ID spécifié.");
   }
-  $sth = $conn->prepare(
+  $sth = $pdo->prepare(
     "SELECT circuit_touristique.Id_Circuit_Touristique,
           ville_depart.Nom AS ville_depart,
           ville_arrivee.Nom AS ville_arrivee,
@@ -82,7 +81,7 @@ session_start();
   if (!$circuit) {
     die("ID introuvable dans la base de données.");
   }
-  $isLoggedIn = !empty($_SESSION['username']); // clé à ajuster selon le système de login
+  $isLoggedIn = !empty($_SESSION['loggedin']);
   ?>
   <div class="dropdown position-fixed bottom-0 end-0 mb-3 me-3 bd-mode-toggle">
     <button class="btn btn-bd-primary py-2 dropdown-toggle d-flex align-items-center" id="bd-theme" type="button"
@@ -135,7 +134,7 @@ session_start();
     <div class="container d-flex flex-wrap justify-content-between align-items-center">
       <div class="d-flex align-items-center">
         <img src="image/logo_agence_sans_fond.png" alt="Icône" class="icone_Horizon">
-          <h3 class="mb-0">Horizon Sportif</h3>
+        <h3 class="mb-0">Horizon Sportif</h3>
       </div>
       <nav class="nav nav-masthead justify-content-center">
         <a class="nav-link fw-bold py-1 px-2" aria-current="page" href="./index.php">Accueil</a>
@@ -144,23 +143,24 @@ session_start();
       </nav>
       <div class="dropdown">
         <a href="#" class="d-flex align-items-center link-body-emphasis text-decoration-none dropdown-toggle"
-        data-bs-toggle="dropdown" aria-expanded="false">
-        <strong>
-          <?php if (isset($_SESSION['Identifiant'])):
-            echo htmlspecialchars($_SESSION["Identifiant"]);
-          else:
-            echo 'Non Connecté';
-          endif;
-          ?>
-        </strong>
+          data-bs-toggle="dropdown" aria-expanded="false">
+          <strong>
+            <?php if (isset($_SESSION['Identifiant'])):
+              echo htmlspecialchars($_SESSION["Identifiant"]);
+            else:
+              echo 'Non Connecté';
+            endif;
+            ?>
+          </strong>
         </a>
         <ul class="dropdown-menu dropdown-menu-end text-small shadow">
-          <li><a class="dropdown-item" href="./reservation.html">Mes réservations</a></li>
+          <li><a class="dropdown-item" href="./reservation.php">Mes réservations</a></li>
           <li>
             <hr class="dropdown-divider" />
           </li>
           <li><a class="dropdown-item" href="login.php">Login</a></li>
           <li><a class="dropdown-item" onclick="signout()">Déconnection</a></li>
+        </ul>
         </ul>
       </div>
     </div>
@@ -183,7 +183,7 @@ session_start();
 
           <button id="reserveBtn" type="button" class="btn btn-primary btn-lg mt-3"
             data-circuit-id="<?php echo htmlspecialchars($idCircuit, ENT_QUOTES); ?>"
-            data-logged-in="<?php echo $isLoggedIn = true; ?>"
+            data-logged-in="<?php echo $isLoggedIn; ?>"
             data-price="<?php echo htmlspecialchars($circuit['Prix_Inscription'], ENT_QUOTES); ?>"
             data-bs-toggle="modal" data-bs-target="#confirmReserveModal"
             <?php if (!$isLoggedIn) echo 'disabled aria-disabled="true"'; ?>>
@@ -204,7 +204,7 @@ session_start();
         <div class="timeline-item">
           <H5></H5>
           <?php
-          $sth = $conn->prepare("SELECT etape.Ordre, etape.Id_Etape, etape.Duree, etape.Date_, activitee.Nom, activitee.Description, activitee.Image FROM circuit_touristique INNER JOIN etape ON etape.Id_Circuit_Touristique = circuit_touristique.Id_Circuit_Touristique INNER JOIN activitee ON activitee.Id_Activitee = etape.Id_Activitee WHERE circuit_touristique.Id_Circuit_Touristique = :idcircuit;");
+          $sth = $pdo->prepare("SELECT etape.Ordre, etape.Id_Etape, etape.Duree, etape.Date_, activitee.Nom, activitee.Description, activitee.Image FROM circuit_touristique INNER JOIN etape ON etape.Id_Circuit_Touristique = circuit_touristique.Id_Circuit_Touristique INNER JOIN activitee ON activitee.Id_Activitee = etape.Id_Activitee WHERE circuit_touristique.Id_Circuit_Touristique = :idcircuit;");
           $sth->execute(['idcircuit' => $idCircuit]);
           $etapes = $sth->fetchAll();
           $nb = count($etapes);
@@ -308,12 +308,20 @@ session_start();
       <div class="modal-content">
         <div class="modal-header">
           <h5 class="modal-title" id="confirmReserveLabel">Confirmer la réservation</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fermer"></button>
+          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
         </div>
+
         <div class="modal-body">
-          <p>Prix: <strong id="modalPrice">--</strong> €</p>
+          <p>Prix unitaire : <strong id="modalPrice"></strong> €</p>
+
+          <label for="modalNbPersonne">Nombre de personnes :</label>
+          <input type="number" id="modalNbPersonne" min="1" max="10" value="1" class="form-control">
+
+          <p>Total : <strong id="modalTotalPrice"></strong> €</p>
+
           <div id="reserveAlert" class="alert d-none" role="alert"></div>
         </div>
+
         <div class="modal-footer">
           <button id="confirmReserveBtn" type="button" class="btn btn-primary">Confirmer</button>
           <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
@@ -322,8 +330,6 @@ session_start();
     </div>
   </div>
 
-  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.min.js"></script>
   <script src="./js/theme-toggle.js"></script>
   <script src="./js/reservation.js" defer></script>
 </body>

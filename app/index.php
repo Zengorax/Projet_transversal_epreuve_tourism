@@ -3,7 +3,7 @@ session_start();
 ?>
 
 <!doctype html>
-<html lang="en" class="h-100" data-bs-theme="dark">
+<html lang="fr" class="h-100" data-bs-theme="dark">
 
 <head>
     <meta charset="utf-8" />
@@ -20,14 +20,16 @@ session_start();
     <link rel="stylesheet" href="./css/style.css">
     <meta name="theme-color" content="#712cf9" />
     <link href="./css/cover.css" rel="stylesheet" />
-    <script src="./js/signoutscript.js"></script>
     <script>
         function signout() {
             fetch('./signout.php')
                 .then(() => location.reload())
         }
-            </script>
-
+    </script>
+    <?php
+    include './dbconnect.php';
+    include './cururl.php';
+    ?>
 </head>
 
 <body style="background-image: url(./image/home.png);">
@@ -115,7 +117,6 @@ session_start();
             <div class="dropdown">
                 <a href="#" class="d-flex align-items-center link-body-emphasis text-decoration-none dropdown-toggle"
                     data-bs-toggle="dropdown" aria-expanded="false">
-                    <img src="https://github.com/mdo.png" alt="" width="32" height="32" class="rounded-circle me-2" />
                     <strong>
                         <?php if (isset($_SESSION['Identifiant'])):
                             echo htmlspecialchars($_SESSION["Identifiant"]);
@@ -126,13 +127,17 @@ session_start();
                     </strong>
                 </a>
                 <ul class="dropdown-menu dropdown-menu-end text-small shadow">
-                    <li><a class="dropdown-item" href="./reservation.html">Mes réservations</a></li>
+                    <li><a class="dropdown-item" href="./reservation.php">Mes réservations</a></li>
                     <li>
                         <hr class="dropdown-divider" />
                     </li>
-                    <li><a class="dropdown-item" href="login.php">Login</a></li>
-                    <li><a class="dropdown-item" onclick="signout()">Déconnection</a></li>
+                    <?php if (!isset($_SESSION['Identifiant'])): ?>
+                        <li><a class="dropdown-item" href="login.php">Login</a></li>
+                    <?php else: ?>
+                        <li><a class="dropdown-item" onclick="signout()">Déconnection</a></li>
+                    <?php endif; ?>
                 </ul>
+
             </div>
         </div>
     </header>
