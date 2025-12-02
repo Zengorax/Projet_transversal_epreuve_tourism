@@ -1,3 +1,7 @@
+<?php
+session_start();
+?>
+
 <!doctype html>
 <html lang="en" class="h-100" data-bs-theme="dark">
 
@@ -16,6 +20,14 @@
     <link rel="stylesheet" href="./css/style.css">
     <meta name="theme-color" content="#712cf9" />
     <link href="./css/cover.css" rel="stylesheet" />
+    <script src="./js/signoutscript.js"></script>
+    <script>
+        function signout() {
+            fetch('./signout.php')
+                .then(() => location.reload())
+        }
+            </script>
+
 </head>
 
 <body style="background-image: url(./image/home.png);">
@@ -118,7 +130,8 @@
                     <li>
                         <hr class="dropdown-divider" />
                     </li>
-                    <li><a class="dropdown-item" href="./Sign-in.html">Déconnexion</a></li>
+                    <li><a class="dropdown-item" href="login.php">Login</a></li>
+                    <li><a class="dropdown-item" onclick="signout()">Déconnection</a></li>
                 </ul>
             </div>
         </div>
