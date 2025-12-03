@@ -7,7 +7,7 @@ require_once 'config.php';
 
 $reservations = [];
 $error_message = null;
-
+header('Content-Type: text/html; charset=utf-8');
 
 if (!isset($_SESSION['Identifiant'])) {
   header('Location: login.php');
@@ -88,6 +88,12 @@ try {
   <title>Mes Réservations</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
   <link rel="stylesheet" href="./css/style.css">
+  <script>
+    function signout() {
+      fetch('./signout.php')
+        .then(() => location.reload())
+    }
+  </script>
 </head>
 
 <body>
@@ -105,21 +111,7 @@ try {
       </nav>
 
       <div class="dropdown">
-        <a href="#" class="d-flex align-items-center link-body-emphasis text-decoration-none dropdown-toggle"
-          data-bs-toggle="dropdown" aria-expanded="false">
-          <strong><?php echo htmlspecialchars($_SESSION['Identifiant'] ?? 'utilisateur'); ?></strong>
-        </a>
-        <ul class="dropdown-menu dropdown-menu-end text-small shadow">
-          <li><a class="dropdown-item active" href="./reservation.php">Mes réservations</a></li>
-          <li>
-            <hr class="dropdown-divider" />
-          </li>
-          <?php if (!isset($_SESSION['Identifiant'])): ?>
-            <li><a class="dropdown-item" href="login.php">Login</a></li>
-          <?php else: ?>
-            <li><a class="dropdown-item" onclick="signout()">Déconnection</a></li>
-          <?php endif; ?>
-        </ul>
+        <strong><?php echo htmlspecialchars($_SESSION['Identifiant'] ?? 'utilisateur'); ?></strong>
       </div>
     </div>
   </header>
@@ -171,7 +163,7 @@ try {
 
                   $statut_text = htmlspecialchars($res['Statut'] ?? 'Inconnu');
                   $statut_class = match (mb_strtolower($statut_text)) {
-                    'confirmée', 'validé' => 'bg-success',
+                    'confirmée', 'validée' => 'bg-success',
                     'en attente' => 'bg-warning text-dark',
                     'annulée' => 'bg-danger',
                     default => 'bg-secondary',
@@ -188,20 +180,12 @@ try {
   </div>
 
   <script src="./js/theme-toggle.js"></script>
-  <script>
-    function signout() {
-      if (confirm("Voulez-vous vous déconnecter ?")) {
-        window.location.href = 'logout.php';
-      }
-    }
-  </script>
   <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
     integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r"
     crossorigin="anonymous"></script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.min.js"
     integrity="sha384-G/EV+4j2dNv+tEPo3++6LCgdCROaejBqfUeNjuKAiuXbjrxilcCdDz6ZAVfHWe1Y"
     crossorigin="anonymous"></script>
-
 </body>
 
 </html>

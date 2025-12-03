@@ -127,17 +127,14 @@ session_start();
                     </strong>
                 </a>
                 <ul class="dropdown-menu dropdown-menu-end text-small shadow">
-                    <li><a class="dropdown-item" href="./reservation.php">Mes réservations</a></li>
-                    <li>
-                        <hr class="dropdown-divider" />
-                    </li>
                     <?php if (!isset($_SESSION['Identifiant'])): ?>
-                        <li><a class="dropdown-item" href="login.php">Login</a></li>
+                        <li><a class="dropdown-item" href="login.php">Connection</a></li>
                     <?php else: ?>
+                        <li><a class="dropdown-item" href="./reservation.php">Mes réservations</a></li>
+                        <hr class="dropdown-divider" />
                         <li><a class="dropdown-item" onclick="signout()">Déconnection</a></li>
                     <?php endif; ?>
                 </ul>
-
             </div>
         </div>
     </header>
@@ -156,13 +153,6 @@ session_start();
             <a href="./voyages.php" class="btn btn-lg btn-light fw-bold border-white bg-white">En Savoir Plus</a>
         </p>
     </main>
-    <footer class="mt-auto text-white-50">
-        <!-- <p>
-                Cover template for
-                <a href="https://getbootstrap.com/" class="text-white">Bootstrap</a>,
-                by <a href="https://x.com/mdo" class="text-white">@mdo</a>.
-            </p> -->
-    </footer>
     <script src="./js/theme-toggle.js"></script>
     <script src="./js/sidebars.js" class="astro-vvvwv3sm"></script>
 </body>

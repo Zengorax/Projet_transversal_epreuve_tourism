@@ -157,13 +157,13 @@ include './config.php';
           </strong>
         </a>
         <ul class="dropdown-menu dropdown-menu-end text-small shadow">
-          <li><a class="dropdown-item" href="./reservation.php">Mes réservations</a></li>
-          <li>
+          <?php if (!isset($_SESSION['Identifiant'])): ?>
+            <li><a class="dropdown-item" href="login.php">Connection</a></li>
+          <?php else: ?>
+            <li><a class="dropdown-item" href="./reservation.php">Mes réservations</a></li>
             <hr class="dropdown-divider" />
-          </li>
-          <li><a class="dropdown-item" href="login.php">Login</a></li>
-          <li><a class="dropdown-item" onclick="signout()">Déconnection</a></li>
-        </ul>
+            <li><a class="dropdown-item" onclick="signout()">Déconnection</a></li>
+          <?php endif; ?>
         </ul>
       </div>
     </div>
