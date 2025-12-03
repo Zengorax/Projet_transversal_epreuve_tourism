@@ -181,23 +181,33 @@ session_start();
                     $nb = count($circuits);
                     for ($i = 0; $i < $nb; $i++) {
                         $idCircuit = $circuits[$i]['Id_Circuit_Touristique'];
+                        $places = $circuits[$i]['Nb_Places_Dispo'];
+                        $badgetype = '';
+                        if ($places < 5) {
+                            $badgetype = 'bg-danger';
+                        } elseif ($places >= 5 && $places <= 25) {
+                            $badgetype = 'bg-warning';
+                        } else {
+                            $badgetype = 'bg-success';
+                        }
                         $voirLink = "./details.php?id=" . urlencode($idCircuit);
                         echo '<div class="col">
                                 <div class="card shadow-sm">
-                                    <div class="image-rect0" style="background-image: url(' . $circuits[$i]['Image'] . ');">
+                                    <div class="image-rect0" style="position: relative; background-image: url(' . $circuits[$i]['Image'] . ');">
                                         <span class="prixvoyage">' . $circuits[$i]['Prix_Inscription'] . ' €</span>
+                                        <span class="placesdispo badge ' . $badgetype . '">' . $places . ' Places</span>                                    
                                     </div>
                                     <div class="card-body">
                                         <p class="card-text">' . $circuits[$i]['Description'] . '</p>
-                                            <div class="d-flex justify-content-between align-items-center">
-                                                <div class="btn-group">
-                                                    <a href="' . $voirLink . '" class="btn btn-sm btn-outline-secondary">Voir</a>
-                                                </div>
-                                                <div class="d-flex align-items-center">
-                                                    <small class="text-body-secondary mx-1">' . $circuits[$i]['ville_depart'] . '</small>
-                                                    <i class="bi bi-arrow-right mx-1"></i>
-                                                    <small class="text-body-secondary mx-1">' . $circuits[$i]['ville_arrivee'] . '</small>
-                                                </div>
+                                        <div class="d-flex justify-content-between align-items-center">
+                                            <div class="btn-group">
+                                                <a href="' . $voirLink . '" class="btn btn-sm btn-outline-secondary">Voir</a>
+                                            </div>
+                                            <div class="d-flex align-items-center">
+                                                <small class="text-body-secondary mx-1">' . $circuits[$i]['ville_depart'] . '</small>
+                                                <i class="bi bi-arrow-right mx-1"></i>
+                                                <small class="text-body-secondary mx-1">' . $circuits[$i]['ville_arrivee'] . '</small>
+                                            </div>
                                             <small class="text-body-secondary">' . $circuits[$i]['Duree_Circuit'] . ' jours</small>
                                         </div>
                                     </div>

@@ -57,13 +57,18 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
                         if (password_verify($password, $hashed_password)) {
 
+
                             $_SESSION["loggedin"] = true;
                             $_SESSION["Id_Client"] = $id;
                             $_SESSION["Identifiant"] = $username;
 
-
-                            header("location: $currenturl");
-                            exit;
+                            if ($_SESSION['Identifiant'] == 'admin') {
+                                header("location: admin.php");
+                                exit;
+                            } else {
+                                header("location: $currenturl");
+                                exit;
+                            }
                         } else {
 
                             $login_err = "Mot de passe ou nom d'utilisateur incorrect.";

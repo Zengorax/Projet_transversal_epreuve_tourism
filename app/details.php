@@ -182,6 +182,7 @@ include './config.php';
             <li class="list-group-item"><strong>Ville de départ:</strong> <?php echo $circuit['ville_depart']; ?></li>
             <li class="list-group-item"><strong>Destinations:</strong> <?php echo $circuit['ville_arrivee']; ?></li>
             <li class="list-group-item"><strong>Prix:</strong> <?php echo $circuit['Prix_Inscription']; ?> €</li>
+            <li class="list-group-item"><strong>Places Restantes:</strong> <?php echo $circuit['Nb_Places_Dispo']; ?></li>
           </ul>
 
           <button id="reserveBtn" type="button" class="btn btn-primary btn-lg mt-3"

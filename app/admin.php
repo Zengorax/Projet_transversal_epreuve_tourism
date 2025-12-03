@@ -1,11 +1,10 @@
 <?php
 session_start();
-$_SESSION['admin'] = 'admin';
-if (!isset($_SESSION['admin'])) {
+if ($_SESSION['Identifiant'] !== 'admin') {
     header('Location: login.php');
     exit;
 }
-require_once 'dbconnect_admin.php';
+require 'config.php';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (isset($_POST['action'])) {
@@ -24,7 +23,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             } else {
                 $date = null;
             }
-            $sth = $conn->prepare("INSERT INTO Circuit_Touristique (Description, Duree_Circuit, Prix_Inscription, Nb_Places_Dispo, Date_Depart, Id_Ville, Id_Ville_1) VALUES (?, ?, ?, ?, ?, ?, ?)");
+            $sth = $pdo->prepare("INSERT INTO Circuit_Touristique (Description, Duree_Circuit, Prix_Inscription, Nb_Places_Dispo, Date_Depart, Id_Ville, Id_Ville_1) VALUES (?, ?, ?, ?, ?, ?, ?)");
             $sth->execute([$desc, $duree, $prix, $nb, $date, $ville_dep, $ville_arr]);
             header('Location: admin.php');
             exit;
@@ -44,7 +43,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             } else {
                 $date = null;
             }
-            $sth = $conn->prepare("UPDATE Circuit_Touristique SET Description=?, Duree_Circuit=?, Prix_Inscription=?, Nb_Places_Dispo=?, Date_Depart=?, Id_Ville=?, Id_Ville_1=? WHERE Id_Circuit_Touristique=?");
+            $sth = $pdo->prepare("UPDATE Circuit_Touristique SET Description=?, Duree_Circuit=?, Prix_Inscription=?, Nb_Places_Dispo=?, Date_Depart=?, Id_Ville=?, Id_Ville_1=? WHERE Id_Circuit_Touristique=?");
             $sth->execute([$desc, $duree, $prix, $nb, $date, $ville_dep, $ville_arr, $id]);
             header('Location: admin.php');
             exit;
@@ -52,7 +51,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         if ($action === 'delete_circuit') {
             $id = $_POST['id_circuit'];
-            $sth = $conn->prepare("DELETE FROM Circuit_Touristique WHERE Id_Circuit_Touristique=?");
+            $sth = $pdo->prepare("DELETE FROM Circuit_Touristique WHERE Id_Circuit_Touristique=?");
             $sth->execute([$id]);
             header('Location: admin.php');
             exit;
@@ -65,7 +64,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $cout = $_POST['cout'] ?? null;
             $id_type = $_POST['id_type'] ?? null;
             $id_ville = $_POST['id_ville'] ?? null;
-            $sth = $conn->prepare("INSERT INTO Activitee (Nom, Image, Description, Cout_Visite, Id_Type, Id_Ville) VALUES (?, ?, ?, ?, ?, ?)");
+            $sth = $pdo->prepare("INSERT INTO Activitee (Nom, Image, Description, Cout_Visite, Id_Type, Id_Ville) VALUES (?, ?, ?, ?, ?, ?)");
             $sth->execute([$nom, $image, $desc, $cout, $id_type, $id_ville]);
             header('Location: admin.php');
             exit;
@@ -79,7 +78,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $cout = $_POST['cout'] ?? null;
             $id_type = $_POST['id_type'] ?? null;
             $id_ville = $_POST['id_ville'] ?? null;
-            $sth = $conn->prepare("UPDATE Activitee SET Nom=?, Image=?, Description=?, Cout_Visite=?, Id_Type=?, Id_Ville=? WHERE Id_Activitee=?");
+            $sth = $pdo->prepare("UPDATE Activitee SET Nom=?, Image=?, Description=?, Cout_Visite=?, Id_Type=?, Id_Ville=? WHERE Id_Activitee=?");
             $sth->execute([$nom, $image, $desc, $cout, $id_type, $id_ville, $id]);
             header('Location: admin.php');
             exit;
@@ -87,7 +86,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         if ($action === 'delete_activitee') {
             $id = $_POST['id_activitee'];
-            $sth = $conn->prepare("DELETE FROM Activitee WHERE Id_Activitee=?");
+            $sth = $pdo->prepare("DELETE FROM Activitee WHERE Id_Activitee=?");
             $sth->execute([$id]);
             header('Location: admin.php');
             exit;
@@ -104,7 +103,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             } else {
                 $date = null;
             }
-            $sth = $conn->prepare("INSERT INTO Etape (Ordre, Date_, Duree, Id_Circuit_Touristique, Id_Activitee) VALUES (?, ?, ?, ?, ?)");
+            $sth = $pdo->prepare("INSERT INTO Etape (Ordre, Date_, Duree, Id_Circuit_Touristique, Id_Activitee) VALUES (?, ?, ?, ?, ?)");
             $sth->execute([$ordre, $date, $duree, $id_circuit, $id_activitee]);
             header('Location: admin.php');
             exit;
@@ -122,7 +121,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             } else {
                 $date = null;
             }
-            $sth = $conn->prepare("UPDATE Etape SET Ordre=?, Date_=?, Duree=?, Id_Circuit_Touristique=?, Id_Activitee=? WHERE Id_Etape=?");
+            $sth = $pdo->prepare("UPDATE Etape SET Ordre=?, Date_=?, Duree=?, Id_Circuit_Touristique=?, Id_Activitee=? WHERE Id_Etape=?");
             $sth->execute([$ordre, $date, $duree, $id_circuit, $id_activitee, $id]);
             header('Location: admin.php');
             exit;
@@ -130,7 +129,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         if ($action === 'delete_etape') {
             $id = $_POST['id_etape'];
-            $sth = $conn->prepare("DELETE FROM Etape WHERE Id_Etape=?");
+            $sth = $pdo->prepare("DELETE FROM Etape WHERE Id_Etape=?");
             $sth->execute([$id]);
             header('Location: admin.php');
             exit;
@@ -138,19 +137,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 }
 
-$sth = $conn->query("SELECT c.*, v1.Nom AS Ville_Depart, v2.Nom AS Ville_Arrivee FROM Circuit_Touristique c LEFT JOIN Ville v1 ON c.Id_Ville = v1.Id_Ville LEFT JOIN Ville v2 ON c.Id_Ville_1 = v2.Id_Ville ORDER BY c.Id_Circuit_Touristique DESC");
+$sth = $pdo->query("SELECT c.*, v1.Nom AS Ville_Depart, v2.Nom AS Ville_Arrivee FROM Circuit_Touristique c LEFT JOIN Ville v1 ON c.Id_Ville = v1.Id_Ville LEFT JOIN Ville v2 ON c.Id_Ville_1 = v2.Id_Ville ORDER BY c.Id_Circuit_Touristique DESC");
 $circuits = $sth->fetchAll();
 
-$sth = $conn->query("SELECT e.*, c.Description AS Circuit_Description, a.Nom AS Activitee_Nom FROM Etape e LEFT JOIN Circuit_Touristique c ON e.Id_Circuit_Touristique = c.Id_Circuit_Touristique LEFT JOIN Activitee a ON e.Id_Activitee = a.Id_Activitee ORDER BY e.Id_Etape DESC");
+$sth = $pdo->query("SELECT e.*, c.Description AS Circuit_Description, a.Nom AS Activitee_Nom FROM Etape e LEFT JOIN Circuit_Touristique c ON e.Id_Circuit_Touristique = c.Id_Circuit_Touristique LEFT JOIN Activitee a ON e.Id_Activitee = a.Id_Activitee ORDER BY e.Id_Etape DESC");
 $etapes = $sth->fetchAll();
 
-$sth = $conn->query("SELECT a.*, t.Type AS Type_Nom, v.Nom AS Ville_Nom FROM Activitee a LEFT JOIN Type t ON a.Id_Type = t.Id_Type LEFT JOIN Ville v ON a.Id_Ville = v.Id_Ville ORDER BY a.Id_Activitee DESC");
+$sth = $pdo->query("SELECT a.*, t.Type AS Type_Nom, v.Nom AS Ville_Nom FROM Activitee a LEFT JOIN Type t ON a.Id_Type = t.Id_Type LEFT JOIN Ville v ON a.Id_Ville = v.Id_Ville ORDER BY a.Id_Activitee DESC");
 $activitees = $sth->fetchAll();
 
-$sth = $conn->query("SELECT * FROM Ville ORDER BY Nom ASC");
+$sth = $pdo->query("SELECT * FROM Ville ORDER BY Nom ASC");
 $villes = $sth->fetchAll();
 
-$sth = $conn->query("SELECT * FROM Type ORDER BY Type ASC");
+$sth = $pdo->query("SELECT * FROM Type ORDER BY Type ASC");
 $types = $sth->fetchAll();
 ?>
 <!doctype html>
