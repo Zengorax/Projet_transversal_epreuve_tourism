@@ -152,6 +152,15 @@ body {
     border-radius: 4px;
 }
 
+.placesdispo {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    font-size: 14px;
+    font-weight: 600;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
 .detail-hero {
     background: url('https://images.unsplash.com/photo-1507525428034-b723cf961d3e') center/cover no-repeat;
     height: 70vh;
@@ -200,5 +209,5 @@ form select {
 }
 
 .mb-3 {
-padding: 20px;
+    padding: 20px;
 }

@@ -1,3 +1,6 @@
+<?php
+session_start();
+?>
 <!DOCTYPE html>
 <html lang="fr">
 
@@ -9,9 +12,16 @@
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
   <link rel="stylesheet" href="./css/style.css">
   <script src="./js/signoutscript.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
-    integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
-    crossorigin="anonymous"></script>
+  <script>
+    function signout() {
+      fetch('./signout.php')
+        .then(() => location.reload())
+    }
+  </script>
+  <?php
+  include './dbconnect.php';
+  include './cururl.php';
+  ?>
 </head>
 
 <body>
@@ -101,15 +111,23 @@
       <div class="dropdown">
         <a href="#" class="d-flex align-items-center link-body-emphasis text-decoration-none dropdown-toggle"
           data-bs-toggle="dropdown" aria-expanded="false">
-          <img src="https://github.com/mdo.png" alt="" width="32" height="32" class="rounded-circle me-2" />
-          <strong>mdo</strong>
+          <strong>
+            <?php if (isset($_SESSION['Identifiant'])):
+              echo htmlspecialchars($_SESSION["Identifiant"]);
+            else:
+              echo 'Non Connecté';
+            endif;
+            ?>
+          </strong>
         </a>
         <ul class="dropdown-menu dropdown-menu-end text-small shadow">
-          <li><a class="dropdown-item" href="./reservation.html">Mes réservations</a></li>
-          <li>
+          <?php if (!isset($_SESSION['Identifiant'])): ?>
+            <li><a class="dropdown-item" href="login.php">Connection</a></li>
+          <?php else: ?>
+            <li><a class="dropdown-item" href="./reservation.php">Mes réservations</a></li>
             <hr class="dropdown-divider" />
-          </li>
-          <li><a class="dropdown-item" href="./Sign-in.html">Déconnexion</a></li>
+            <li><a class="dropdown-item" onclick="signout()">Déconnection</a></li>
+          <?php endif; ?>
         </ul>
       </div>
     </div>
@@ -124,11 +142,11 @@
           <div class="card-body p-4">
             <form action="#" method="post">
               <div class="mb-3">
-                <label for="name" class="form-label">Nom *</label>
+                <label for="name" class="form-label">Nom</label>
                 <input type="text" class="form-control" id="name" name="name" placeholder="Votre nom" required>
               </div>
               <div class="mb-3">
-                <label for="email" class="form-label">Email *</label>
+                <label for="email" class="form-label">Email</label>
                 <input type="email" class="form-control" id="email" name="email" placeholder="Votre email" required>
               </div>
               <div class="mb-3">
@@ -136,7 +154,7 @@
                 <input type="text" class="form-control" id="subject" name="subject" placeholder="Sujet du message">
               </div>
               <div class="mb-3">
-                <label for="message" class="form-label">Message *</label>
+                <label for="message" class="form-label">Message</label>
                 <textarea class="form-control" id="message" name="message" rows="5" placeholder="Votre message"
                   required></textarea>
               </div>
@@ -146,24 +164,15 @@
             </form>
           </div>
         </div>
-
-        <div class="mt-4 text-center text-muted small">
-          <p>Adresse : 123 Rue Exemple, 35000 Rennes</p>
-          <p>Téléphone : 02 99 00 00 00</p>
-        </div>
-
       </div>
     </div>
 
   </div>
 
-  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
-    integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r"
-    crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.min.js"></script>
   <script src="./js/theme-toggle.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.min.js"
-    integrity="sha384-G/EV+4j2dNv+tEPo3++6LCgdCROaejBqfUeNjuKAiuXbjrxilcCdDz6ZAVfHWe1Y"
-    crossorigin="anonymous"></script>
+
 </body>
 
 </html>

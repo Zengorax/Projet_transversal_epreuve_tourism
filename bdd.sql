@@ -14,6 +14,7 @@ CREATE TABLE Pays(
 CREATE TABLE Client(
    Id_Client INT AUTO_INCREMENT,
    Identifiant VARCHAR(100)  NOT NULL,
+   Password TEXT,
    Nom VARCHAR(60) ,
    Prenom VARCHAR(60) ,
    Email VARCHAR(100) ,
@@ -39,6 +40,7 @@ CREATE TABLE Ville(
 
 CREATE TABLE Circuit_Touristique(
    Id_Circuit_Touristique INT AUTO_INCREMENT,
+   Image TEXT,
    Description TEXT,
    Duree_Circuit INT,
    Prix_Inscription DECIMAL(19,4),
