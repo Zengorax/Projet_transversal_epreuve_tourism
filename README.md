@@ -1,4 +1,4 @@
-# 🌍 Horizon Sportif - Application de Gestion Touristique
+# Horizon Sportif - Application de Gestion Touristique
 
 ![Statut du projet](https://img.shields.io/badge/Statut-Terminé-brightgreen)
 [![HTML](https://img.shields.io/badge/HTML-%23E34F26.svg?logo=html5&logoColor=white)](#)
@@ -7,34 +7,34 @@
 ![Base de données](https://img.shields.io/badge/Database-MySQL-orange)
 ![Base de données](https://img.shields.io/badge/Database-MariaDB-blue)
 
-## 📖 Contexte du Projet
+## Contexte du Projet
 
-Ce projet a été réalisé dans le cadre d'un **Projet Transversal** visant à valider les compétences de développement et de gestion de base de données.
+Ce projet a été réalisé dans le cadre d'un Projet Transversal visant à valider les compétences de développement et de gestion de base de données.
 L'objectif est de fournir une application de gestion pour une agence de tourisme fictive, permettant la gestion des circuits, des étapes touristiques et des réservations clients.
 
-## ✨ Fonctionnalités
+## Fonctionnalités
 
 Le site gère deux types d'utilisateurs distincts:
 
-### 👤 Espace Client
+### Espace Client
 
 - Visualisation des circuits touristiques disponibles.
 - Consultation des détails d'un voyage (étapes, activitées, durée).
 - Réservation de places pour un circuit.
 
-### 🛡️ Espace Administrateur
+### Espace Administrateur
 
 - **Gestion des Circuits :** Création, modification et suppression de voyages.
 - **Gestion des Étapes et Lieux :** Association d'activitées et villes aux circuits.
 - Accès global à la base de données.
 
-## 🗄️ Base de Données & Modélisation
+## Base de Données & Modélisation
 
-La base de donnée est la partie centrale de ce projet. Elle a été conçus pour rattacher une grande quantité d'informations (villes, pays, étapes d'un circuit, les clients et leurs réservations) et les faire concorder dans le temps (date, durée).
+La base de donnée est une partie centrale du projet. Elle a été conçus pour rattacher une grande quantité d'informations (villes, pays, étapes d'un circuit, les clients et leurs réservations) et les associer à une période (date, durée).
 
 ### Schémas
 
-Les schémas de conception sont disponibles dans ce dépôt:
+Les schémas de conception sont disponibles dans le dépôt:
 
 - **MCD (Modèle Conceptuel de Données)** : Voir le fichier ModeleEntiteObjet.jpg
 - **MPD (Modèle Physique de Données)** : Voir le fichier ModelePhysique.jpg
@@ -48,13 +48,13 @@ La base de donnée s'articule principalement autour des tables suivantes :
 - `activitee` : L'activitée ratachée à chaque étape.
 - `client`, `Ville`, `pays`, `reservation`, `type`.
 
-## 🛠️ Outils
+## Outils
 
 - **Langage :** HTML, PHP, CSS, Java
 - **Framework :** Bootstrap
 - **BDD :** MYSQL et MariaDB
 
-## 🚀 Installation
+## Installation
 
 1.  **Cloner le dépôt :**
 
