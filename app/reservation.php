@@ -46,31 +46,30 @@ try {
 
 
   if ($client_id > 0) {
-
     $sql = "SELECT 
-                    Reservation.Id_Reservation, 
-                    V_Depart.Nom AS Ville_Depart, 
-                    V_Arrivee.Nom AS Ville_Arrivee, 
-                    Pays.Nom AS Pays_Destination, 
-                    Circuit_Touristique.Date_Depart, 
-                    Reservation.nb_personne, 
-                    Statut.Statut 
-                FROM 
-                    Reservation
-                LEFT JOIN 
-                    Circuit_Touristique ON Reservation.Id_Circuit_Touristique = Circuit_Touristique.Id_Circuit_Touristique 
-                LEFT JOIN 
-                    Ville V_Depart ON Circuit_Touristique.Id_Ville_1 = V_Depart.Id_Ville 
-                LEFT JOIN 
-                    Ville V_Arrivee ON Circuit_Touristique.Id_Ville = V_Arrivee.Id_Ville 
-                LEFT JOIN 
-                    Pays ON V_Arrivee.Id_Pays = Pays.Id_Pays 
-                LEFT JOIN 
-                    Statut ON Reservation.Id_Statut = Statut.Id_Statut 
-                WHERE 
-                    Reservation.Id_Client = :client_id 
-                ORDER BY 
-                    Circuit_Touristique.Date_Depart DESC";
+                        Reservation.Id_Reservation, 
+                        V_Depart.Nom AS Ville_Depart, 
+                        V_Arrivee.Nom AS Ville_Arrivee, 
+                        Pays.Nom AS Pays_Destination, 
+                        Circuit_Touristique.Date_Depart, 
+                        Reservation.nb_personne, 
+                        Statut.Statut 
+                    FROM 
+                        Reservation
+                    LEFT JOIN 
+                        Circuit_Touristique ON Reservation.Id_Circuit_Touristique = Circuit_Touristique.Id_Circuit_Touristique 
+                    LEFT JOIN 
+                        Ville V_Depart ON Circuit_Touristique.Id_Ville_1 = V_Depart.Id_Ville 
+                    LEFT JOIN 
+                        Ville V_Arrivee ON Circuit_Touristique.Id_Ville = V_Arrivee.Id_Ville 
+                    LEFT JOIN 
+                        Pays ON V_Arrivee.Id_Pays = Pays.Id_Pays 
+                    LEFT JOIN 
+                        Statut ON Reservation.Id_Statut = Statut.Id_Statut 
+                    WHERE 
+                        Reservation.Id_Client = :client_id 
+                    ORDER BY 
+                        Circuit_Touristique.Date_Depart DESC";
 
     $stmt = $pdo->prepare($sql);
     $stmt->bindParam(':client_id', $client_id, PDO::PARAM_INT);
@@ -117,7 +116,6 @@ try {
         <a class="nav-link fw-bold py-1 px-2" href="./voyages.php">Voyages</a>
         <a class="nav-link fw-bold py-1 px-2" href="./Contact.php">Contact</a>
       </nav>
-
       <div class="dropdown">
         <a href="#" class="d-flex align-items-center link-body-emphasis text-decoration-none dropdown-toggle"
           data-bs-toggle="dropdown" aria-expanded="false">
@@ -129,6 +127,7 @@ try {
             endif;
             ?>
           </strong>
+
         </a>
         <ul class="dropdown-menu dropdown-menu-end text-small shadow">
           <?php if (!isset($_SESSION['Identifiant'])): ?>
@@ -143,11 +142,10 @@ try {
     </div>
     </div>
   </header>
-
   <div class="container py-5">
     <h2 class="text-center fw-bold mb-4">Mes Réservations</h2>
 
-    <div class="card p-4">
+    <div class="p-4">
       <?php if ($error_message): ?>
         <div class="alert alert-danger" role="alert">
           <?php echo $error_message; ?>
@@ -157,52 +155,99 @@ try {
           Vous n'avez actuellement aucune réservation.
         </div>
       <?php else: ?>
-        <table class="table table-hover align-middle">
-          <thead class="">
-            <tr>
-              <th scope="col">Numéro de réservation</th>
-              <th scope="col">Départ / Arrivée</th>
-              <th scope="col">Pays</th>
-              <th scope="col">Date de départ</th>
-              <th scope="col">Nb de personnes</th>
-              <th scope="col">Statut</th>
-            </tr>
-          </thead>
-          <tbody>
-            <?php foreach ($reservations as $res): ?>
-              <tr>
-                <th scope="row"><?php echo htmlspecialchars($res['Id_Reservation']); ?></th>
-                <td>
-                  <strong><?php echo htmlspecialchars($res['Ville_Depart'] ?? 'N/D'); ?></strong> →
-                  <?php echo htmlspecialchars($res['Ville_Arrivee'] ?? 'N/D'); ?>
-                </td>
-                <td>
-                  <?php echo htmlspecialchars($res['Pays_Destination'] ?? 'Inconnu'); ?>
-                </td>
-                <td>
-                  <?php
-                  $date_depart = $res['Date_Depart'] ? date('d/m/Y', strtotime($res['Date_Depart'])) : 'N/A';
-                  echo $date_depart;
-                  ?>
-                </td>
-                <td><?php echo htmlspecialchars($res['nb_personne'] ?? 'N/D'); ?></td>
-                <td>
-                  <?php
 
-                  $statut_text = htmlspecialchars($res['Statut'] ?? 'Inconnu');
-                  $statut_class = match (mb_strtolower($statut_text)) {
-                    'confirmée', 'validée' => 'bg-success',
-                    'en attente' => 'bg-warning text-dark',
-                    'annulée' => 'bg-danger',
-                    default => 'bg-secondary',
-                  };
-                  ?>
-                  <span class="badge <?php echo $statut_class; ?>"><?php echo $statut_text; ?></span>
-                </td>
+        <div class="d-md-none">
+          <?php foreach ($reservations as $res): ?>
+            <?php
+            //Badge en version Mobile
+            $statut_text = htmlspecialchars($res['Statut'] ?? 'Inconnu');
+            $statut_class = match (mb_strtolower($statut_text)) {
+              'confirmée', 'validée' => 'bg-success',
+              'en attente', 'en cours' => 'bg-warning',
+              'annulée' => 'bg-danger',
+              default => 'bg-secondary',
+            };
+            $date_depart = $res['Date_Depart'] ? date('d/m/Y', strtotime($res['Date_Depart'])) : 'N/A';
+            ?>
+
+            <div class="card mb-3 shadow-sm border-2">
+              <div class="card-header d-flex justify-content-between align-items-center">
+                <h5 class="mb-0 fs-6">Réservation n°<?php echo htmlspecialchars($res['Id_Reservation']); ?></h5>
+                <span class="badge <?php echo $statut_class; ?>"><?php echo $statut_text; ?></span>
+              </div>
+              <div class="card-body">
+                <p class="card-text mb-1">
+                  <strong>Départ:</strong>
+                  <?php echo htmlspecialchars($res['Ville_Depart'] ?? 'N/D'); ?>
+                  <span class="mx-1">→</span>
+                  <strong>Arrivée:</strong>
+                  <?php echo htmlspecialchars($res['Ville_Arrivee'] ?? 'N/D'); ?>
+                </p>
+                <p class="card-text mb-1">
+                  <strong class="text-secondary">Destination:</strong>
+                  <?php echo htmlspecialchars($res['Pays_Destination'] ?? 'Inconnu'); ?>
+                </p>
+                <p class="card-text mb-1">
+                  <strong class="text-secondary">Date:</strong>
+                  <?php echo $date_depart; ?>
+                </p>
+                <p class="card-text mb-0">
+                  <strong class="text-secondary">Personnes:</strong>
+                  <?php echo htmlspecialchars($res['nb_personne'] ?? 'N/D'); ?>
+                </p>
+              </div>
+            </div>
+          <?php endforeach; ?>
+        </div>
+
+        <div class="d-none d-md-block card p-4">
+          <table class="table table-hover align-middle">
+            <thead class="">
+              <tr>
+                <th scope="col">Numéro de réservation</th>
+                <th scope="col">Départ / Arrivée</th>
+                <th scope="col">Pays</th>
+                <th scope="col">Date de départ</th>
+                <th scope="col">Nb de personnes</th>
+                <th scope="col">Statut</th>
               </tr>
-            <?php endforeach; ?>
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+              <?php foreach ($reservations as $res): ?>
+                <tr>
+                  <th scope="row"><?php echo htmlspecialchars($res['Id_Reservation']); ?></th>
+                  <td>
+                    <strong><?php echo htmlspecialchars($res['Ville_Depart'] ?? 'N/D'); ?></strong> →
+                    <?php echo htmlspecialchars($res['Ville_Arrivee'] ?? 'N/D'); ?>
+                  </td>
+                  <td>
+                    <?php echo htmlspecialchars($res['Pays_Destination'] ?? 'Inconnu'); ?>
+                  </td>
+                  <td>
+                    <?php
+                    $date_depart = $res['Date_Depart'] ? date('d/m/Y', strtotime($res['Date_Depart'])) : 'N/A';
+                    echo $date_depart;
+                    ?>
+                  </td>
+                  <td><?php echo htmlspecialchars($res['nb_personne'] ?? 'N/D'); ?></td>
+                  <td>
+                    <?php
+                    //Badge en version Normal
+                    $statut_text = htmlspecialchars($res['Statut'] ?? 'Inconnu');
+                    $statut_class = match (mb_strtolower($statut_text)) {
+                      'confirmée', 'validée' => 'bg-success',
+                      'en cours', 'en attente' => 'bg-warning',
+                      'annulée' => 'bg-danger',
+                      default => 'bg-secondary',
+                    };
+                    ?>
+                    <span class="badge <?php echo $statut_class; ?>"><?php echo $statut_text; ?></span>
+                  </td>
+                </tr>
+              <?php endforeach; ?>
+            </tbody>
+          </table>
+        </div>
       <?php endif; ?>
     </div>
   </div>
