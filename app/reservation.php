@@ -4,13 +4,21 @@ session_start();
 
 
 require_once 'config.php';
+include './cururl.php';
+
+
+if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true) {
+  header('Location: login.php');
+  exit;
+}
+
 
 $reservations = [];
 $error_message = null;
 header('Content-Type: text/html; charset=utf-8');
 
 if (!isset($_SESSION['Identifiant'])) {
-  header('Location: login.php');
+  header('Location: Index.php');
   exit;
 }
 
@@ -111,8 +119,28 @@ try {
       </nav>
 
       <div class="dropdown">
-        <strong><?php echo htmlspecialchars($_SESSION['Identifiant'] ?? 'utilisateur'); ?></strong>
+        <a href="#" class="d-flex align-items-center link-body-emphasis text-decoration-none dropdown-toggle"
+          data-bs-toggle="dropdown" aria-expanded="false">
+          <strong>
+            <?php if (isset($_SESSION['Identifiant'])):
+              echo htmlspecialchars($_SESSION["Identifiant"]);
+            else:
+              echo 'Non Connecté';
+            endif;
+            ?>
+          </strong>
+        </a>
+        <ul class="dropdown-menu dropdown-menu-end text-small shadow">
+          <?php if (!isset($_SESSION['Identifiant'])): ?>
+            <li><a class="dropdown-item" href="login.php">Connection</a></li>
+          <?php else: ?>
+            <li><a class="dropdown-item" href="./reservation.php">Mes réservations</a></li>
+            <hr class="dropdown-divider" />
+            <li><a class="dropdown-item" onclick="signout()">Déconnection</a></li>
+          <?php endif; ?>
+        </ul>
       </div>
+    </div>
     </div>
   </header>
 

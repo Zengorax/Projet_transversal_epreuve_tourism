@@ -1,7 +1,9 @@
 <?php
 
 session_start();
+
 $currenturl = $_SESSION['currenturl'];
+
 if (isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true) {
     header("Location: $currenturl");
     exit;

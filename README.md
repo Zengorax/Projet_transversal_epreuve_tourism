@@ -36,8 +36,8 @@ La base de donnée est une partie centrale du projet. Elle a été conçus pour 
 
 Les schémas de conception sont disponibles dans le dépôt:
 
-- **MCD (Modèle Conceptuel de Données)** : Voir le fichier ModeleEntiteObjet.jpg
-- **MPD (Modèle Physique de Données)** : Voir le fichier ModelePhysique.jpg
+- **MCD (Modèle Conceptuel de Données)** : Voir le fichier MCDR.jpg
+- **MPD (Modèle Physique de Données)** : Voir le fichier MPD.jpg
 
 ### Structure des données
 
