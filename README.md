@@ -84,7 +84,7 @@ La base de donnée s'articule principalement autour des tables suivantes :
 
 4.  **Placer le dossier app ou son contenus à la racine de votre serveur puis ouvrez l'index.php**
 
-## 📂 Structure du Projet
+## Structure du Projet
 
 ```text
 ├── bdd.sql                 # Structure de la BDD
