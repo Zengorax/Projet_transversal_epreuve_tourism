@@ -2,10 +2,10 @@
 -- version 5.2.1
 -- https://www.phpmyadmin.net/
 --
--- Host: 127.0.0.1:3306
--- Generation Time: Oct 28, 2025 at 01:27 PM
--- Server version: 9.1.0
--- PHP Version: 8.3.14
+-- Hôte : 127.0.0.1:3307
+-- Généré le : ven. 05 déc. 2025 à 08:25
+-- Version du serveur : 11.5.2-MariaDB
+-- Version de PHP : 8.3.14
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -18,32 +18,11 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Database: `societe tourisme`
+-- Base de données : `application tourisme`
 --
 
--- --------------------------------------------------------
-
 --
--- Table structure for table `activitee`
---
-
-DROP TABLE IF EXISTS `activitee`;
-CREATE TABLE IF NOT EXISTS `activitee` (
-  `Id_Activitee` int NOT NULL AUTO_INCREMENT,
-  `Nom` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `Image` text COLLATE utf8mb4_unicode_ci,
-  `Description` text COLLATE utf8mb4_unicode_ci,
-  `Cout_Visite` decimal(15,2) DEFAULT NULL,
-  `Id_Type` int DEFAULT NULL,
-  `Id_Ville` int NOT NULL,
-  PRIMARY KEY (`Id_Activitee`),
-  UNIQUE KEY `Nom` (`Nom`),
-  KEY `Id_Type` (`Id_Type`),
-  KEY `Id_Ville` (`Id_Ville`)
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
---
--- Dumping data for table `activitee`
+-- Déchargement des données de la table `activitee`
 --
 
 INSERT INTO `activitee` (`Id_Activitee`, `Nom`, `Image`, `Description`, `Cout_Visite`, `Id_Type`, `Id_Ville`) VALUES
@@ -53,104 +32,28 @@ INSERT INTO `activitee` (`Id_Activitee`, `Nom`, `Image`, `Description`, `Cout_Vi
 (4, 'Plongée dans les nombreuses épaves de Saint-Malo', 'https://saintmalosecret.fr/wp-content/uploads/2018/05/H%C3%A9lice-Fetlar.jpg', 'Avec un guide de palanquée, vous pourrez explorer les épaves entourant Saint-Malo comme le Fetlar ou le Hilda. Admirez la faune et la flore très précieuse qui ont pris possession des lieux et nagez parmi eux. Pour débutants ou confirmés.', 34.99, 1, 12),
 (5, 'Plongez parmi la vie sous-marine costa-ricaine', 'https://tse4.mm.bing.net/th/id/OIP.EH2_fnvBRHihijxIKH7T8AHaFj?cb=12ucfimg=1&rs=1&pid=ImgDetMain&o=7&rm=3', 'Sur les iles Cocos au Costa-Rica, vous allez avoir l\'opportunité de faire de la plongée sous-marine pour contempler la faune et la flore costa-ricaine. Des poissons multicolores aux coraux gigantesques, vous serez émerveillés.', 34.99, 1, 11),
 (6, 'Snorkeling dans la Méditerranée au large de Barcelone', NULL, 'Passez un moment de partage en famille lors de votre passage à Barcelone avec cette activité snorkeling dans les eaux barcelonaises. Découvrez la faune maritime cachée de la Catalogne en étant encadrés par des moniteurs professionnels', 34.99, 8, 16),
-(7, 'Plongée dans les eaux catalognes au large de Tarragona', NULL, 'Lors de votre escale à Tarragona, vous aurez l\'opportunité de plonger dans la mer Méditerranée et découvrir sa faune et sa flore maritime unique', 29.99, 1, 17);
-
--- --------------------------------------------------------
-
---
--- Table structure for table `circuit_touristique`
---
-
-DROP TABLE IF EXISTS `circuit_touristique`;
-CREATE TABLE IF NOT EXISTS `circuit_touristique` (
-  `Id_Circuit_Touristique` int NOT NULL AUTO_INCREMENT,
-  `Image` varchar(1000) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
-  `Description` text COLLATE utf8mb4_unicode_ci,
-  `Duree_Circuit` int DEFAULT NULL,
-  `Prix_Inscription` decimal(15,2) DEFAULT NULL,
-  `Nb_Places_Dispo` int DEFAULT NULL,
-  `Date_Depart` datetime DEFAULT NULL,
-  `Id_Ville` int NOT NULL,
-  `Id_Ville_1` int NOT NULL,
-  PRIMARY KEY (`Id_Circuit_Touristique`),
-  KEY `Id_Ville` (`Id_Ville`),
-  KEY `Id_Ville_1` (`Id_Ville_1`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+(7, 'Plongée dans les eaux catalognes au large de Tarragona', 'https://media.tenor.com/sbfBfp3FeY8AAAAj/oia-uia.gif', 'Lors de votre escale à Tarragona, vous aurez l\'opportunité de plonger dans la mer Méditerranée et découvrir sa faune et sa flore maritime unique', 29.99, 1, 17),
+(8, 'Randonnée au parc naturel de l\'Alt Pirineu', 'https://media.routard.com/image/51/5/alt-pirineu-espot-servicios-editoriales-georama-act.1612515.w630.jpg', 'Lové entre le Pallars Sobirà et l\'Alt Urgell, le parc naturel de l’Alt Pirineu (Hautes Pyrénées) est le plus grand de Catalogne. C’est dire la ribambelle d’espèces animales et végétales protégées que vous aurez la chance d’y croiser, à l’image du sapin du Pla de la Selva, un arbre classé monument naturel !\r\n\r\nAu fil de vos pérégrinations, les paysages n’auront de cesse de changer.', 85.00, 3, 17);
 
 --
--- Dumping data for table `circuit_touristique`
+-- Déchargement des données de la table `circuit_touristique`
 --
 
 INSERT INTO `circuit_touristique` (`Id_Circuit_Touristique`, `Image`, `Description`, `Duree_Circuit`, `Prix_Inscription`, `Nb_Places_Dispo`, `Date_Depart`, `Id_Ville`, `Id_Ville_1`) VALUES
-(1, '', 'Faites le tour de la Catalogne dans un parcours sportif qui mêlera sports extrêmes et moments tranquilles de découverte en famille', 3, 120.00, 80, '1994-10-31 14:12:52', 16, 5);
-
--- --------------------------------------------------------
-
---
--- Table structure for table `client`
---
-
-DROP TABLE IF EXISTS `client`;
-CREATE TABLE IF NOT EXISTS `client` (
-  `Id_Client` int NOT NULL AUTO_INCREMENT,
-  `Identifiant` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `Nom` varchar(60) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `Prenom` varchar(60) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `Email` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  PRIMARY KEY (`Id_Client`),
-  UNIQUE KEY `Identifiant` (`Identifiant`),
-  UNIQUE KEY `Email` (`Email`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+(1, 'https://plus.unsplash.com/premium_photo-1697730076411-2b4602bf494f?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=1170', 'Faites le tour de la Catalogne dans un parcours sportif qui mêlera sports extrêmes et moments tranquilles de découverte en famille', 3, 120.00, 65, '1994-10-31 14:12:52', 16, 5),
+(2, 'https://plus.unsplash.com/premium_photo-1733277611634-bf2ee6693a6e?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=1170', 'De la randonnée dans la forêt de toufloen à l\'exploration des fonds marins dans la baie de saint-malo, ne ratez pas ce sublime séjour dans les plus beaux recoins de notre chère bretagne.', 6, 75.00, 2, '2025-10-31 10:46:59', 15, 12);
 
 --
--- Dumping data for table `client`
---
-
-INSERT INTO `client` (`Id_Client`, `Identifiant`, `Nom`, `Prenom`, `Email`) VALUES
-(1, '115544526399878136451', 'LERAY', 'Hadrien', 'hadrienleray@jaimelespatates.com');
-
--- --------------------------------------------------------
-
---
--- Table structure for table `etape`
---
-
-DROP TABLE IF EXISTS `etape`;
-CREATE TABLE IF NOT EXISTS `etape` (
-  `Id_Etape` int NOT NULL AUTO_INCREMENT,
-  `Ordre` int DEFAULT NULL,
-  `Date_` datetime DEFAULT NULL,
-  `Duree` int DEFAULT NULL,
-  `Id_Circuit_Touristique` int NOT NULL,
-  `Id_Activitee` int NOT NULL,
-  PRIMARY KEY (`Id_Etape`),
-  KEY `Id_Circuit_Touristique` (`Id_Circuit_Touristique`),
-  KEY `Id_Activitee` (`Id_Activitee`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
---
--- Dumping data for table `etape`
+-- Déchargement des données de la table `etape`
 --
 
 INSERT INTO `etape` (`Id_Etape`, `Ordre`, `Date_`, `Duree`, `Id_Circuit_Touristique`, `Id_Activitee`) VALUES
-(1, 1, '1995-10-31 14:19:45', 2, 1, 6);
-
--- --------------------------------------------------------
-
---
--- Table structure for table `pays`
---
-
-DROP TABLE IF EXISTS `pays`;
-CREATE TABLE IF NOT EXISTS `pays` (
-  `Id_Pays` int NOT NULL AUTO_INCREMENT,
-  `Nom` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  PRIMARY KEY (`Id_Pays`),
-  UNIQUE KEY `Nom` (`Nom`)
-) ENGINE=InnoDB AUTO_INCREMENT=54 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+(1, 1, '1995-10-31 14:19:45', 2, 1, 6),
+(2, 2, '1995-11-01 09:26:05', 4, 1, 3),
+(3, 3, '1995-11-02 09:00:00', 3, 1, 8);
 
 --
--- Dumping data for table `pays`
+-- Déchargement des données de la table `pays`
 --
 
 INSERT INTO `pays` (`Id_Pays`, `Nom`) VALUES
@@ -208,48 +111,8 @@ INSERT INTO `pays` (`Id_Pays`, `Nom`) VALUES
 (3, 'USA'),
 (53, 'Venezuela');
 
--- --------------------------------------------------------
-
 --
--- Table structure for table `reservation`
---
-
-DROP TABLE IF EXISTS `reservation`;
-CREATE TABLE IF NOT EXISTS `reservation` (
-  `Id_Reservation` int NOT NULL AUTO_INCREMENT,
-  `Date_Reservation` datetime DEFAULT NULL,
-  `nb_personne` int NOT NULL,
-  `Id_Statut` int DEFAULT NULL,
-  `Id_Circuit_Touristique` int NOT NULL,
-  `Id_Client` int NOT NULL,
-  PRIMARY KEY (`Id_Reservation`),
-  KEY `Id_Statut` (`Id_Statut`),
-  KEY `Id_Circuit_Touristique` (`Id_Circuit_Touristique`),
-  KEY `Id_Client` (`Id_Client`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
---
--- Dumping data for table `reservation`
---
-
-INSERT INTO `reservation` (`Id_Reservation`, `Date_Reservation`, `nb_personne`, `Id_Statut`, `Id_Circuit_Touristique`, `Id_Client`) VALUES
-(1, '2025-10-28 14:24:24', 4, 2, 1, 1);
-
--- --------------------------------------------------------
-
---
--- Table structure for table `statut`
---
-
-DROP TABLE IF EXISTS `statut`;
-CREATE TABLE IF NOT EXISTS `statut` (
-  `Id_Statut` int NOT NULL AUTO_INCREMENT,
-  `Statut` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  PRIMARY KEY (`Id_Statut`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
---
--- Dumping data for table `statut`
+-- Déchargement des données de la table `statut`
 --
 
 INSERT INTO `statut` (`Id_Statut`, `Statut`) VALUES
@@ -257,21 +120,8 @@ INSERT INTO `statut` (`Id_Statut`, `Statut`) VALUES
 (2, 'Validée'),
 (3, 'Annulée');
 
--- --------------------------------------------------------
-
 --
--- Table structure for table `type`
---
-
-DROP TABLE IF EXISTS `type`;
-CREATE TABLE IF NOT EXISTS `type` (
-  `Id_Type` int NOT NULL AUTO_INCREMENT,
-  `Type` varchar(60) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  PRIMARY KEY (`Id_Type`)
-) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
---
--- Dumping data for table `type`
+-- Déchargement des données de la table `type`
 --
 
 INSERT INTO `type` (`Id_Type`, `Type`) VALUES
@@ -288,24 +138,8 @@ INSERT INTO `type` (`Id_Type`, `Type`) VALUES
 (11, 'Base Jumping'),
 (12, 'Alpinisme');
 
--- --------------------------------------------------------
-
 --
--- Table structure for table `ville`
---
-
-DROP TABLE IF EXISTS `ville`;
-CREATE TABLE IF NOT EXISTS `ville` (
-  `Id_Ville` int NOT NULL AUTO_INCREMENT,
-  `Nom` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `Id_Pays` int DEFAULT NULL,
-  PRIMARY KEY (`Id_Ville`),
-  UNIQUE KEY `Nom` (`Nom`),
-  KEY `Id_Pays` (`Id_Pays`)
-) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
---
--- Dumping data for table `ville`
+-- Déchargement des données de la table `ville`
 --
 
 INSERT INTO `ville` (`Id_Ville`, `Nom`, `Id_Pays`) VALUES
@@ -325,45 +159,6 @@ INSERT INTO `ville` (`Id_Ville`, `Nom`, `Id_Pays`) VALUES
 (15, 'Guidel', 1),
 (16, 'Barcelone', 2),
 (17, 'Tarragona', 2);
-
---
--- Constraints for dumped tables
---
-
---
--- Constraints for table `activitee`
---
-ALTER TABLE `activitee`
-  ADD CONSTRAINT `activitee_ibfk_1` FOREIGN KEY (`Id_Type`) REFERENCES `type` (`Id_Type`),
-  ADD CONSTRAINT `activitee_ibfk_2` FOREIGN KEY (`Id_Ville`) REFERENCES `ville` (`Id_Ville`);
-
---
--- Constraints for table `circuit_touristique`
---
-ALTER TABLE `circuit_touristique`
-  ADD CONSTRAINT `circuit_touristique_ibfk_1` FOREIGN KEY (`Id_Ville`) REFERENCES `ville` (`Id_Ville`),
-  ADD CONSTRAINT `circuit_touristique_ibfk_2` FOREIGN KEY (`Id_Ville_1`) REFERENCES `ville` (`Id_Ville`);
-
---
--- Constraints for table `etape`
---
-ALTER TABLE `etape`
-  ADD CONSTRAINT `etape_ibfk_1` FOREIGN KEY (`Id_Circuit_Touristique`) REFERENCES `circuit_touristique` (`Id_Circuit_Touristique`),
-  ADD CONSTRAINT `etape_ibfk_2` FOREIGN KEY (`Id_Activitee`) REFERENCES `activitee` (`Id_Activitee`);
-
---
--- Constraints for table `reservation`
---
-ALTER TABLE `reservation`
-  ADD CONSTRAINT `reservation_ibfk_1` FOREIGN KEY (`Id_Statut`) REFERENCES `statut` (`Id_Statut`),
-  ADD CONSTRAINT `reservation_ibfk_2` FOREIGN KEY (`Id_Circuit_Touristique`) REFERENCES `circuit_touristique` (`Id_Circuit_Touristique`),
-  ADD CONSTRAINT `reservation_ibfk_3` FOREIGN KEY (`Id_Client`) REFERENCES `client` (`Id_Client`);
-
---
--- Constraints for table `ville`
---
-ALTER TABLE `ville`
-  ADD CONSTRAINT `ville_ibfk_1` FOREIGN KEY (`Id_Pays`) REFERENCES `pays` (`Id_Pays`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
