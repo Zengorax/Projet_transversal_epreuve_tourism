@@ -3,7 +3,7 @@
 ![Statut du projet](https://img.shields.io/badge/Statut-Terminé-brightgreen)
 [![HTML](https://img.shields.io/badge/HTML-%23E34F26.svg?logo=html5&logoColor=white)](#)
 ![PHP](https://img.shields.io/badge/PHP-777BB4?logo=php&logoColor=white)
-![Java](https://img.shields.io/badge/Java-ED8B00?logo=openjdk&logoColor=white)
+![JavaScript](https://img.shields.io/badge/JavaScript-ED8B00?logo=javascript&logoColor=white)
 ![Base de données](https://img.shields.io/badge/Database-MySQL-orange)
 ![Base de données](https://img.shields.io/badge/Database-MariaDB-blue)
 
@@ -50,7 +50,7 @@ La base de donnée s'articule principalement autour des tables suivantes :
 
 ## Outils
 
-- **Langage :** HTML, PHP, CSS, Java
+- **Langage :** HTML, PHP, CSS, JavaScript
 - **Framework :** Bootstrap
 - **BDD :** MYSQL et MariaDB
 
